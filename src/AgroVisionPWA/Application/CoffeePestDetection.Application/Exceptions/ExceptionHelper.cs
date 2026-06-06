@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CoffeePestDetection.Application.Commons;
+using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CoffeePestDetection.Application.Exceptions;
 
@@ -11,12 +13,13 @@ public static class ExceptionHelper
 
         context.Response.ContentType = "application/json";
 
-        var response = new
+        var apiResponse = ApiResponse<object>.Fail(message);
+
+        var options = new JsonSerializerOptions
         {
-            success = false,
-            message
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        await context.Response.WriteAsync(JsonSerializer.Serialize(apiResponse, options));
     }
 }

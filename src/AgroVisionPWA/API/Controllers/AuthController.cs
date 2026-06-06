@@ -1,8 +1,10 @@
 ﻿using CoffeePestDetection.Application.Commons;
+using CoffeePestDetection.Application.Exceptions;
 using CoffeePestDetection.Application.Features.Auth.DTOs;
 using CoffeePestDetection.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoffeePestDetection.API.Controllers
 {
@@ -26,6 +28,16 @@ namespace CoffeePestDetection.API.Controllers
                 .Ok(
                     response,
                     "Autenticación exitosa"));
+        }
+
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(RegisterRequestDto request)
+        {
+            var result = await _authService.RegisterAsync(request);
+
+            return Ok(
+                ApiResponse<RegisterResponseDto>.Ok(result, "Usuario registrado correctamente."));
         }
 
         //Protegido para pruebas
