@@ -3,8 +3,10 @@ namespace CoffeePestDetection.Application.Exceptions;
 
 public class BadRequestException : Exception
 {
-    public BadRequestException(string message)
-        : base(message)
+
+    public IEnumerable<string>? Errors { get; }
+    public BadRequestException(string message, IEnumerable<string>? errors = null): base(message)
     {
+        Errors = errors;
     }
 }
