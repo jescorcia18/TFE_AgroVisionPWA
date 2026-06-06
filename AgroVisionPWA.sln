@@ -17,6 +17,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeePestDetection.Domain"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeePestDetection.Infrastructure", "src\AgroVisionPWA\Infrastructure\CoffeePestDetection.Infrastructure\CoffeePestDetection.Infrastructure.csproj", "{25EA2A83-AAE0-4738-BDB8-F1ABB58F583E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{0D9B3F3D-F7F2-46E6-8C49-57A09BA45ABF}"
+	ProjectSection(SolutionItems) = preProject
+		docker\docker-compose.yml = docker\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "db-init", "db-init", "{9C2FBE1E-8AC4-4247-A229-86A6B9265EDF}"
+	ProjectSection(SolutionItems) = preProject
+		docker\inicializar.sh = docker\inicializar.sh
+		docker\script.sql = docker\script.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,5 +64,6 @@ Global
 		{C77AEFE5-0713-4B67-AC25-18B5FA487B24} = {6FD09A89-31C2-477D-9A4D-A6EE703706A4}
 		{F88B583A-59D7-455B-97BA-F0DE617EC1F5} = {6FD09A89-31C2-477D-9A4D-A6EE703706A4}
 		{25EA2A83-AAE0-4738-BDB8-F1ABB58F583E} = {6FD09A89-31C2-477D-9A4D-A6EE703706A4}
+		{9C2FBE1E-8AC4-4247-A229-86A6B9265EDF} = {0D9B3F3D-F7F2-46E6-8C49-57A09BA45ABF}
 	EndGlobalSection
 EndGlobal

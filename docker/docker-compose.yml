@@ -1,0 +1,41 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: agrovision_sql_db
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=AgroVisionSecure2026!
+      - MSSQL_PID=Developer
+    ports:
+      - "1434:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+      - ./db-init:/usr/config
+    entrypoint: /bin/bash -c "/usr/config/inicializar.sh & /opt/mssql/bin/sqlservr"
+    networks:
+      - agrovision-network
+
+  api:
+    image: agrovision_backend:latest
+    container_name: agrovision_api_container
+    restart: always
+    build:
+      context: ..
+      dockerfile: src/AgroVisionPWA/API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=agrovision_db;User Id=sa;Password=AgroVisionSecure2026!;TrustServerCertificate=True
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - agrovision-network
+
+volumes:
+  mssql_data:
+
+networks:
+  agrovision-network:
+    driver: bridge
