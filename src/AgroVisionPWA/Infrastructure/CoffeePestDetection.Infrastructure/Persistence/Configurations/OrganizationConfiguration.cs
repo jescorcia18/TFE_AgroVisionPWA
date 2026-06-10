@@ -22,16 +22,24 @@ public class OrganizationConfiguration
             .HasMaxLength(200)
             .IsRequired();
 
-        builder.Property(x => x.type)
-            .HasMaxLength(50)
-            .IsRequired();
-
         builder.Property(x => x.Nit)
             .HasMaxLength(50)
             .IsRequired();
 
+        builder.Property(x => x.type)
+            .HasMaxLength(50)
+            .IsRequired();
+
+        builder.Property(x => x.IsActive)
+            .IsRequired();
+
+        builder.Property(x => x.CreatedAt)
+            .IsRequired();
+
+
         builder.HasMany(x => x.Profiles)
             .WithOne(x => x.Organization)
-            .HasForeignKey(x => x.OrganizationId);
+            .HasForeignKey(x => x.OrganizationId)
+             .OnDelete(DeleteBehavior.Restrict); //para no borrar usuario accidentalmente si una organización se borra;
     }
 }

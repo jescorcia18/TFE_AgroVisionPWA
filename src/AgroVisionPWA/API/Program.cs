@@ -2,6 +2,7 @@ using CoffeePestDetection.API;
 using CoffeePestDetection.API.Middlewares;
 using CoffeePestDetection.Infrastructure.Persistence;
 using CoffeePestDetection.Infrastructure.Security;
+using CoffeePestDetection.Infrastructure.Security.Seeders;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

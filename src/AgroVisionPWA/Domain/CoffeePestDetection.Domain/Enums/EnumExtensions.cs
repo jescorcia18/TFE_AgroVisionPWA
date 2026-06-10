@@ -38,4 +38,22 @@ public static class EnumExtensions
 
         return null; // Si no encuentra ninguna coincidencia, retorna null
     }
+
+    public static string GetDescription(this Enum value)
+    {
+        var field =
+            value.GetType().GetField(value.ToString());
+
+        var attribute =
+            field?
+            .GetCustomAttributes(
+                typeof(
+                    DescriptionAttribute),
+                false)
+            .FirstOrDefault()
+            as DescriptionAttribute;
+
+        return attribute?.Description
+            ?? value.ToString();
+    }
 }

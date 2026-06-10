@@ -95,6 +95,7 @@ namespace CoffeePestDetection.Infrastructure.Services
                     throw new NotFoundException("La organización no existe.");
             }
 
+            var role = AuthEnum.ParseRole(request.Role);
 
             var profile = new Profile
             {
@@ -102,7 +103,7 @@ namespace CoffeePestDetection.Infrastructure.Services
                 FullName = request.FullName,
                 Email = request.Email,
                 PasswordHash = PasswordHasher.Hash(request.Password),
-                Role = request.Role ?? AuthEnum.Roles.Farmer.GetValue(),
+                Role = role,
                 OrganizationId = request.OrganizationId ?? Guid.Empty
             };
 
@@ -115,7 +116,7 @@ namespace CoffeePestDetection.Infrastructure.Services
                 Id = profile.Id,
                 FullName = profile.FullName,
                 Email = profile.Email,
-                Role = profile.Role
+                Role = profile.Role.GetDescription()
             };
         }
     }

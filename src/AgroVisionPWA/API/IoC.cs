@@ -25,6 +25,8 @@ namespace CoffeePestDetection.API
             // 2. Servicios Scoped (Se crea uno por cada solicitud HTTP)
             services.AddScoped<IAuthService, AuthService>();
 
+            services.AddScoped<IOrganizationService, OrganizationService>();
+
             // 3. Servicios Singleton (Una sola instancia para toda la vida de la app)
             // Usamos el valor desde el appsettings.json en lugar de escribir la clave aquí
             //var jwtKey = configuration["JwtSettings:SecretKey"] ?? "SUPER_SECRET_KEY_123";
