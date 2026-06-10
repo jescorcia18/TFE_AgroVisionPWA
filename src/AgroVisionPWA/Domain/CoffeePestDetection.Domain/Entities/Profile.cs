@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using CoffeePestDetection.Domain.Enums.Features.Auth;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoffeePestDetection.Domain.Entities
 {
@@ -13,7 +14,7 @@ namespace CoffeePestDetection.Domain.Entities
         [Column("full_name")]
         public string FullName { get; set; } = null!;
 
-        public string Role {  get; set; } = null!;
+        public AuthEnum.Roles Role {  get; set; } 
 
         [Column("organization_id")]
         public Guid OrganizationId { get; set; }

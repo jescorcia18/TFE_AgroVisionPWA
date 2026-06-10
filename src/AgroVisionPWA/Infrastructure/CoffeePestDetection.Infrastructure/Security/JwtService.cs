@@ -1,4 +1,5 @@
 ﻿using CoffeePestDetection.Domain.Entities;
+using CoffeePestDetection.Domain.Enums;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -47,7 +48,7 @@ namespace CoffeePestDetection.Infrastructure.Security
                 new(ClaimTypes.NameIdentifier, profile.Id.ToString()),
                 new(ClaimTypes.Email, profile.Email),
                 new("organizationId", profile.OrganizationId.ToString()),
-                new(ClaimTypes.Role, profile.Role)
+                new(ClaimTypes.Role, profile.Role.GetDescription())
             };
 
             var key = new SymmetricSecurityKey(

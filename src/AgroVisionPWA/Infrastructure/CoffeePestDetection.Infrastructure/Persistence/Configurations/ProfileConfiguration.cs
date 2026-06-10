@@ -27,10 +27,14 @@ namespace CoffeePestDetection.Infrastructure.Persistence.Configurations
             builder.HasIndex(x => x.Email)
                 .IsUnique();
 
+            builder.HasIndex(x => x.Email)
+                .IsUnique();
+
             builder.Property(x => x.PasswordHash)
                 .IsRequired();
 
             builder.Property(x => x.Role)
+               .HasMaxLength(50)
                .IsRequired();
         }
     }
