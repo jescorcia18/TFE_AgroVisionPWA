@@ -14,12 +14,14 @@ namespace CoffeePestDetection.Domain.Entities
         [Column("full_name")]
         public string FullName { get; set; } = null!;
 
-        public AuthEnum.Roles Role {  get; set; } 
+        public AuthEnum.Roles Role { get; set; }
 
         [Column("organization_id")]
         public Guid OrganizationId { get; set; }
 
         // navegación
         public Organization Organization { get; set; } = null!;
+
+        public ICollection<Inspection> Inspections { get; set; } = new List<Inspection>();
     }
 }

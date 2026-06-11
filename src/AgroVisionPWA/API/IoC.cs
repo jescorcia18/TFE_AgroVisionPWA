@@ -1,5 +1,7 @@
 ﻿using CoffeePestDetection.Application.Interfaces;
 using CoffeePestDetection.Infrastructure.Persistence;
+using CoffeePestDetection.Infrastructure.Persistence.Repositories.Implementation;
+using CoffeePestDetection.Infrastructure.Persistence.Repositories.Interfaces;
 using CoffeePestDetection.Infrastructure.Security;
 using CoffeePestDetection.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +26,15 @@ namespace CoffeePestDetection.API
 
             // 2. Servicios Scoped (Se crea uno por cada solicitud HTTP)
             services.AddScoped<IAuthService, AuthService>();
-
             services.AddScoped<IOrganizationService, OrganizationService>();
+            services.AddScoped<IInspectionService, InspectionService>();
 
-            // 3. Servicios Singleton (Una sola instancia para toda la vida de la app)
+            // 3. Respositories Scoped
+            services.AddScoped<IInspectionRepository, InspectionRepository>();
+            services.AddScoped<IProfileRepository, ProfileRepository>();
+            services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+
+            // 4. Servicios Singleton (Una sola instancia para toda la vida de la app)
             // Usamos el valor desde el appsettings.json en lugar de escribir la clave aquí
             //var jwtKey = configuration["JwtSettings:SecretKey"] ?? "SUPER_SECRET_KEY_123";
             //services.AddSingleton(new JwtService(jwtKey));

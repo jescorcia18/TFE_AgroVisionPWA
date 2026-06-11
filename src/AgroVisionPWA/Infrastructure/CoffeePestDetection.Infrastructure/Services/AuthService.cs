@@ -8,12 +8,6 @@ using CoffeePestDetection.Domain.Enums.Features.Auth;
 using CoffeePestDetection.Infrastructure.Persistence;
 using CoffeePestDetection.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CoffeePestDetection.Infrastructure.Services
 {
