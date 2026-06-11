@@ -40,10 +40,8 @@ namespace CoffeePestDetection.API.Controllers
 
             if (rolConvertido == null)
             {
-                return BadRequest(new
-                {
-                    Error = $"El rol '{role.RolSolicitado}' no existe en el sistema."
-                });
+                var error = new List<string> { $"El rol '{role.RolSolicitado}' no existe en el sistema." };
+                return BadRequest(ApiResponse<string>.Fail("Validar Rol falló", error));
             }
 
             // Si pasa la validación, trabajas con el enum fuertemente tipado de forma segura

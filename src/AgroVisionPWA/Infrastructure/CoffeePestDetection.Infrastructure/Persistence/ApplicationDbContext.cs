@@ -10,6 +10,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Organization> Organizations => Set<Organization>();
 
+    public DbSet<Inspection> Inspections => Set<Inspection>();
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {

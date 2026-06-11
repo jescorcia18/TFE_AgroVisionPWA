@@ -1,6 +1,7 @@
 ﻿using CoffeePestDetection.Application.Features.Org.DTOs;
 using CoffeePestDetection.Application.Interfaces;
 using CoffeePestDetection.Infrastructure.Persistence;
+using CoffeePestDetection.Infrastructure.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,25 @@ using System.Threading.Tasks;
 
 namespace CoffeePestDetection.Infrastructure.Services
 {
-    public class OrganizationService: IOrganizationService
+    public class OrganizationService : IOrganizationService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IOrganizationRepository _repo;
 
-        public OrganizationService(ApplicationDbContext context)
+        public OrganizationService(IOrganizationRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
-        public async Task<IReadOnlyList<OrganizationDto>>GetOrganizationsAsync()
+        public async Task<IReadOnlyList<OrganizationDto>> GetOrganizationsAsync()
         {
-            return await _context
-                .Organizations
-                .Where(x => x.IsActive)
-                .OrderBy(x => x.Name)
-                .Select(x =>
-                    new OrganizationDto
-                    {
-                        Id = x.Id,
+            var organizations = await _repo.GetActiveAsync();
 
-                        Name = x.Name
-                    })
-                .ToListAsync();
+            return organizations.Select(x =>
+              new OrganizationDto
+              {
+                  Id = x.Id,
+                  Name = x.Name
+              }).ToList();
         }
     }
 }

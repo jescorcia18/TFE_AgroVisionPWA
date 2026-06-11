@@ -1,6 +1,8 @@
 ﻿using CoffeePestDetection.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using CoffeePestDetection.Domain.Enums.Features.Auth;
+using CoffeePestDetection.Domain.Enums;
 
 namespace CoffeePestDetection.Infrastructure.Persistence.Configurations
 {
@@ -27,15 +29,20 @@ namespace CoffeePestDetection.Infrastructure.Persistence.Configurations
             builder.HasIndex(x => x.Email)
                 .IsUnique();
 
-            builder.HasIndex(x => x.Email)
-                .IsUnique();
 
             builder.Property(x => x.PasswordHash)
                 .IsRequired();
 
             builder.Property(x => x.Role)
-               .HasMaxLength(50)
-               .IsRequired();
+            .HasMaxLength(50)
+            .IsRequired()
+            .HasConversion(
+                // Al guardar en la BD: Convierte el Enum a su string correspondiente
+                v => v.GetDescription(),
+
+                // Al leer de la BD: Usa tu método estático para convertir el string a Enum
+                v => AuthEnum.ParseRole(v)
+            );
         }
     }
 }
