@@ -30,13 +30,18 @@ public class InspectionConfiguration :
             .IsRequired();
 
         builder.HasOne(x => x.Inspector)
-
             .WithMany(x => x.Inspections)
+            .HasForeignKey(x => x.InspectorId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-            .HasForeignKey(x =>
-                x.InspectorId)
+        builder.HasOne(x => x.Organization)
+            .WithMany(x => x.Inspections)
+            .HasForeignKey(x => x.OrganizationId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-            .OnDelete(
-                DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Plot)
+            .WithMany(x => x.Inspections)
+            .HasForeignKey(x => x.PlotId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

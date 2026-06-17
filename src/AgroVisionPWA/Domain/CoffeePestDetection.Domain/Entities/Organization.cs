@@ -21,6 +21,9 @@ public class Organization
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Navegación
-    public ICollection<Profile> Profiles { get; set; }
-        = new List<Profile>();
+    public ICollection<Profile> Profiles { get; set; } = new List<Profile>();
+
+    public ICollection<Farm> Farms { get; set; } = new List<Farm>();
+
+    public ICollection<Inspection> Inspections { get; set; } = new List<Inspection>();
 }

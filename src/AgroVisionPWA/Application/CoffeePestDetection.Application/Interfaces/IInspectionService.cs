@@ -9,7 +9,8 @@ namespace CoffeePestDetection.Application.Interfaces
 {
     public interface IInspectionService
     {
-        Task<CreateInspectionResponseDto> CreateAsync(Guid userId, CreateInspectionRequestDto request);
+        Task<CreateInspectionResponseDto> CreateAsync(Guid userId, Guid organizationId, CreateInspectionRequestDto request);
         Task<CreateInspectionResponseDto?> GetByIdAsync(Guid id);
+        Task AssignPlotAsync(Guid inspectionId,Guid plotId,Guid organizationId);
     }
 }

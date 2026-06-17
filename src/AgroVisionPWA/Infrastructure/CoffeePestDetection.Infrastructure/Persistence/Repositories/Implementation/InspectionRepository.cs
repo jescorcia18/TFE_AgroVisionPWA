@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CoffeePestDetection.Infrastructure.Persistence.Repositories.Implementation;
 
-public class InspectionRepository: IInspectionRepository
+public class InspectionRepository : IInspectionRepository
 {
     private readonly
         ApplicationDbContext
@@ -30,6 +30,8 @@ public class InspectionRepository: IInspectionRepository
     {
         return await _context
             .Inspections
+            .Include(x => x.Plot)
+            .Include(x => x.Organization)
             .Include(x => x.Inspector)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
