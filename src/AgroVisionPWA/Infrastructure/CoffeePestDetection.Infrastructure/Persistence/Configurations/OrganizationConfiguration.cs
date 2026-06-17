@@ -41,5 +41,10 @@ public class OrganizationConfiguration
             .WithOne(x => x.Organization)
             .HasForeignKey(x => x.OrganizationId)
              .OnDelete(DeleteBehavior.Restrict); //para no borrar usuario accidentalmente si una organización se borra;
+
+        builder.HasMany(x => x.Farms) // relación con Farms
+            .WithOne(x => x.Organization)
+            .HasForeignKey(x => x.OrganizationId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

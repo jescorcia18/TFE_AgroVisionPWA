@@ -24,14 +24,11 @@ public class InspectionsController : ControllerBase
     public async Task<IActionResult> Create(CreateInspectionRequestDto request)
     {
         var userId = User.GetUserId();
+        var organizationId = User.GetOrganizationId();
 
-        var result =
-            await _service
-                .CreateAsync(
-                    userId,
-                    request);
+        var result = await _service.CreateAsync(userId, organizationId, request);
 
-        return CreatedAtAction( nameof(GetById),
+        return CreatedAtAction(nameof(GetById),
             new { id = result.Id },
             ApiResponse<CreateInspectionResponseDto>
             .Ok(
@@ -39,11 +36,22 @@ public class InspectionsController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult>GetById(Guid id)
+    public async Task<IActionResult> GetById(Guid id)
     {
-        var result =await _service.GetByIdAsync(id);
+        var result = await _service.GetByIdAsync(id);
 
         return Ok(ApiResponse<CreateInspectionResponseDto>
-            .Ok(result, "Inspección obtenida exitosamente."));
+            .Ok(result!, "Inspección obtenida exitosamente."));
+    }
+
+    [HttpPut("{id}/plot")]
+    public async Task<IActionResult> AssignPlot(Guid id, AssignPlotRequestDto request)
+    {
+        var organizationId = User.GetOrganizationId();
+
+        await _service.AssignPlotAsync(id,request.PlotId,organizationId);
+
+        return Ok(ApiResponse<string>
+            .Ok("Inspección asociada correctamente."));
     }
 }
