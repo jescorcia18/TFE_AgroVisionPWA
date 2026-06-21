@@ -47,6 +47,29 @@ builder.Services
         };
 });
 
+// 1. Definir la política de CORS produccion
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // El puerto de tu React/Vite
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Necesario si usas JWT en HttpOnly Cookies o SignalR
+    });
+});*/
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTodoConCredenciales", policy =>
+    {
+        policy.SetIsOriginAllowed(origin => true) // <--- Evalúa cualquier origen como válido
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Ahora sí te deja usarlo sin romper la app
+    });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -91,10 +114,10 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.MapOpenApi();
-}
+//}
 
 // Agregar ejecución de Seed para usuario Admin
 using (var scope = app.Services.CreateScope())
@@ -111,6 +134,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseCors("PermitirTodoConCredenciales"); // Cors
 
 app.UseAuthentication(); //pipeline
 

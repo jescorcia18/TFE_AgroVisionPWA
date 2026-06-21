@@ -74,7 +74,7 @@ namespace CoffeePestDetection.Infrastructure.Services
                 // PROTECCIÓN: Si el endpoint es público, bloquea la autocración de Administradores
                 if (rolValidado.Value == AuthEnum.Roles.Admin)
                 {
-                    throw new BadRequestException("No tienes permisos para registrar un usuario.");
+                    throw new ForbiddenException("No tienes permisos para registrar un usuario.");
                 }
 
                 rolFinal = rolValidado.Value;

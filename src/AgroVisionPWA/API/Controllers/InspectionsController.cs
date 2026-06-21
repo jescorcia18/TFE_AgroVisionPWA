@@ -1,5 +1,6 @@
 ﻿using CoffeePestDetection.Application.Commons;
 using CoffeePestDetection.Application.Extensions;
+using CoffeePestDetection.Application.Features.Image.DTOs;
 using CoffeePestDetection.Application.Features.Inspect.DTOs;
 using CoffeePestDetection.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -14,10 +15,12 @@ namespace CoffeePestDetection.API.Controllers;
 public class InspectionsController : ControllerBase
 {
     private readonly IInspectionService _service;
+    private readonly IInspectionImageService _imageService;
 
-    public InspectionsController(IInspectionService service)
+    public InspectionsController(IInspectionService service, IInspectionImageService imageService)
     {
         _service = service;
+        _imageService = imageService;
     }
 
     [HttpPost]
@@ -49,9 +52,35 @@ public class InspectionsController : ControllerBase
     {
         var organizationId = User.GetOrganizationId();
 
-        await _service.AssignPlotAsync(id,request.PlotId,organizationId);
+        await _service.AssignPlotAsync(id, request.PlotId, organizationId);
 
         return Ok(ApiResponse<string>
             .Ok("Inspección asociada correctamente."));
+    }
+
+    [Authorize]
+    [HttpPost("{inspectionId}/images")]
+
+    public async Task<IActionResult> AddImage(CreateInspectionImageRequestDto request)
+    {
+        var organizationId = User.GetOrganizationId();
+
+        var result = await _imageService.AddImageAsync(organizationId, request);
+
+        return Created(string.Empty, ApiResponse<InspectionImageDto>
+            .Ok(result));
+    }
+
+    [Authorize]
+    [HttpGet("{inspectionId}/images")]
+
+    public async Task<IActionResult> GetImages(Guid inspectionId)
+    {
+        var organizationId = User.GetOrganizationId();
+
+        var result = await _imageService.GetImagesAsync(inspectionId, organizationId);
+
+        return Ok(ApiResponse<IReadOnlyList<InspectionImageDto>>
+            .Ok(result));
     }
 }
