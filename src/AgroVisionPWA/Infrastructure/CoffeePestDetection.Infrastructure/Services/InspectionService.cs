@@ -71,19 +71,19 @@ public class InspectionService : IInspectionService
 
         if (inspection is null)
         {
-            throw new Exception("La inspección no existe.");
+            throw new NotFoundException("La inspección no existe.");
         }
 
         var plot = await _plotRepo.GetByIdAsync(plotId);
 
         if (plot is null)
         {
-            throw new Exception("El lote no existe.");
+            throw new NotFoundException("El lote no existe.");
         }
 
         if (plot.Farm.OrganizationId != organizationId)
         {
-            throw new Exception("El lote no pertenece a la organización.");
+            throw new ForbiddenException("El lote no pertenece a la organización.");
         }
 
         inspection.PlotId = plot.Id;

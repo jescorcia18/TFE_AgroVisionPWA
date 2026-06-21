@@ -24,6 +24,13 @@ public class ExceptionMiddleware
                 StatusCodes.Status401Unauthorized,
                 ex.Message);
         }
+        catch (ForbiddenException ex)
+        {
+            await ExceptionHelper.WriteResponse(
+                context,
+                StatusCodes.Status403Forbidden,
+                ex.Message);
+        }
         catch (NotFoundException ex)
         {
             await ExceptionHelper.WriteResponse(

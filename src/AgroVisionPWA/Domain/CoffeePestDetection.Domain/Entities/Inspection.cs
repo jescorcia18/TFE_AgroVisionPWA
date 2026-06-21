@@ -27,4 +27,5 @@ public class Inspection : BaseEntity
     public Profile Inspector { get; set; } = null!;
     public Organization Organization { get; set; } = null!;
     public Plot? Plot { get; set; }
+    public ICollection<InspectionImage> Images { get; set; } = new List<InspectionImage>();
 }
