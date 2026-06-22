@@ -32,5 +32,14 @@ public class PlotConfiguration : IEntityTypeConfiguration<Plot>
             .WithMany(x => x.Plots)
             .HasForeignKey(x => x.FarmId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(x => x.CreatedAt)
+            .HasColumnName("created_at");
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at");
+
+        builder.Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted");
     }
 }

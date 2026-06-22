@@ -43,5 +43,14 @@ public class InspectionConfiguration :
             .WithMany(x => x.Inspections)
             .HasForeignKey(x => x.PlotId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(x => x.CreatedAt)
+           .HasColumnName("created_at");
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at");
+
+        builder.Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted");
     }
 }

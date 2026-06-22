@@ -1,4 +1,5 @@
 ﻿
+using CoffeePestDetection.Application.Commons;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoffeePestDetection.Domain.Entities;
@@ -34,4 +35,7 @@ public class InspectionImage
 
     /* Navigation */
     public Inspection Inspection { get; set; } = null!;
+
+    public ICollection<InferenceResult> InferenceResults { get; set; } = new List<InferenceResult>();
+
 }

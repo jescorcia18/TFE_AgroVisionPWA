@@ -18,5 +18,8 @@ public static class DataSeeder
 
         await ProfileSeeder
             .SeedAsync(context);
+
+        await DiseaseCatalogSeeder
+            .SeedAsync(context);
     }
 }

@@ -30,6 +30,9 @@ namespace CoffeePestDetection.API
             services.AddScoped<IInspectionService, InspectionService>();
             services.AddScoped<IPlotService, PlotService>();
             services.AddScoped<IInspectionImageService, InspectionImageService>();
+            services.AddScoped<IDiseaseCatalogService, DiseaseCatalogService>();
+
+
 
             // 3. Respositories Scoped
             services.AddScoped<IInspectionRepository, InspectionRepository>();
@@ -37,6 +40,7 @@ namespace CoffeePestDetection.API
             services.AddScoped<IOrganizationRepository, OrganizationRepository>();
             services.AddScoped<IPlotRepository, PlotRepository>();
             services.AddScoped<IInspectionImageRepository, InspectionImageRepository>();
+            services.AddScoped<IDiseaseCatalogRepository, DiseaseCatalogRepository>();
 
             // 4. Servicios Singleton (Una sola instancia para toda la vida de la app)
             // Usamos el valor desde el appsettings.json en lugar de escribir la clave aquí
