@@ -31,5 +31,14 @@ public class FarmConfiguration : IEntityTypeConfiguration<Farm>
             .WithMany(x => x.Farms)
             .HasForeignKey(x => x.OrganizationId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(x => x.CreatedAt)
+           .HasColumnName("created_at");
+
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at");
+
+        builder.Property(x => x.IsDeleted)
+            .HasColumnName("is_deleted");
     }
 }
