@@ -39,6 +39,6 @@ public class FarmConfiguration : IEntityTypeConfiguration<Farm>
             .HasColumnName("updated_at");
 
         builder.Property(x => x.IsDeleted)
-            .HasColumnName("is_deleted");
+            .HasColumnName("isDeleted");
     }
 }

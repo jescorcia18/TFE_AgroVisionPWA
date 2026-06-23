@@ -12,8 +12,10 @@ public class ApplicationDbContext : DbContext
     public DbSet<Farm> Farms => Set<Farm>();
     public DbSet<Plot> Plots => Set<Plot>();
     public DbSet<InspectionImage> InspectionImages => Set<InspectionImage>();
-    public DbSet<DiseaseCatalog> DiseaseCatalogs=> Set<DiseaseCatalog>();
+    public DbSet<DiseaseCatalog> DiseaseCatalogs => Set<DiseaseCatalog>();
     public DbSet<InferenceResult> InferenceResults => Set<InferenceResult>();
+
+    public DbSet<Observation> Observations { get; set; } = null!;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

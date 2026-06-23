@@ -23,9 +23,13 @@ public class PlotConfiguration : IEntityTypeConfiguration<Plot>
         builder.Property(x => x.Description)
             .HasMaxLength(500);
 
+        builder.Property(x => x.FarmId)
+           .HasColumnName("farm_id");
+
         builder.Property(x => x.AreaHectares);
 
         builder.Property(x => x.IsActive)
+            .HasColumnName("isActived")
             .HasDefaultValue(true);
 
         builder.HasOne(x => x.Farm)
@@ -34,12 +38,12 @@ public class PlotConfiguration : IEntityTypeConfiguration<Plot>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(x => x.CreatedAt)
-            .HasColumnName("created_at");
+            .HasColumnName("created_At");
 
         builder.Property(x => x.UpdatedAt)
-            .HasColumnName("updated_at");
+            .HasColumnName("updated_At");
 
         builder.Property(x => x.IsDeleted)
-            .HasColumnName("is_deleted");
+            .HasColumnName("isDeleted");
     }
 }

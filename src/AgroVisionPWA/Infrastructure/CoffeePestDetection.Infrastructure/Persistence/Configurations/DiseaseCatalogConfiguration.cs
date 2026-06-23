@@ -22,8 +22,9 @@ public class DiseaseCatalogConfiguration
             .HasMaxLength(150)
             .IsRequired();
 
-        builder.Property(x => x.CommonName)
-           .HasColumnName("recommendation");
+        builder.Property(x => x.Recommendation)
+           .HasColumnName("recommendation")
+           .HasMaxLength(5000);
 
         builder.Property(x => x.CreatedAt)
             .HasColumnName("created_at");
@@ -32,6 +33,6 @@ public class DiseaseCatalogConfiguration
             .HasColumnName("updated_at");
 
         builder.Property(x => x.IsDeleted)
-            .HasColumnName("is_deleted");
+            .HasColumnName("isDeleted");
     }
 }
