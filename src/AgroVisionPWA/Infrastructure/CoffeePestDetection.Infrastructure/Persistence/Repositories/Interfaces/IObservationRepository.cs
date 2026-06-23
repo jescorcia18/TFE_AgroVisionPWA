@@ -8,4 +8,6 @@ public interface IObservationRepository
     Task AddAsync(Observation observation);
 
     Task<List<Observation>> GetByInspectionIdAsync(Guid inspectionId);
+
+    Task<bool> ExistsAsync(Guid id);
 }

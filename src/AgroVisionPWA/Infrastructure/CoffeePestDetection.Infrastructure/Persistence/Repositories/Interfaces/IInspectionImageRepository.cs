@@ -13,5 +13,6 @@ namespace CoffeePestDetection.Infrastructure.Persistence.Repositories.Interfaces
         Task<InspectionImage?>GetByIdAsync(Guid id);
         Task<IReadOnlyList<InspectionImage>>GetByInspectionAsync(Guid inspectionId);
         Task<bool>ExistsAsync(string fileUri);
+        Task<bool> ExistsAsync(Guid id);
     }
 }

@@ -20,14 +20,19 @@ namespace CoffeePestDetection.Infrastructure.Persistence.Repositories.Implementa
 
         public async Task AddAsync(InspectionImage image)
         {
-            await _context.InspectionImages
-                .AddAsync(image);
+            await _context.InspectionImages.AddAsync(image);
         }
 
         public async Task<bool> ExistsAsync(string fileUri)
         {
             return await _context.InspectionImages
                 .AnyAsync(x =>x.FileUri ==fileUri);
+        }
+
+        public async Task<bool> ExistsAsync(Guid id)
+        {
+            return await _context.InspectionImages
+                .AnyAsync(x => x.Id == id);
         }
 
         public async Task<InspectionImage?> GetByIdAsync(Guid id)

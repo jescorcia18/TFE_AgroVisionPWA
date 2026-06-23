@@ -13,4 +13,6 @@ public interface IInferenceResultRepository
     Task<InspectionImage?> GetByIdImageAsync(Guid id);
 
     Task<bool> ExistsByImageIdAsync(Guid imageId);
+
+    Task<bool> ExistsAsync(Guid id);
 }
