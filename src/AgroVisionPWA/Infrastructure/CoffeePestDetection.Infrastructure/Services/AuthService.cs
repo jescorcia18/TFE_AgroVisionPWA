@@ -47,9 +47,14 @@ namespace CoffeePestDetection.Infrastructure.Services
 
         public async Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto request)
         {
-            if (await _context.Profiles.AnyAsync(x => x.Email == request.Email))
+           if (await _context.Profiles.AnyAsync(x => x.Email == request.Email))
             {
                 throw new BadRequestException("El correo ya existe.");
+            }
+
+            if (!request.OrganizationId.HasValue)
+            {
+                throw new NotFoundException("La Organización no Existe");
             }
 
             //  LÓGICA DE INTEGRACIÓN Y VALIDACIÓN DEL ENUM PARA ROLE
@@ -86,7 +91,7 @@ namespace CoffeePestDetection.Infrastructure.Services
                 var exists = await _context.Organizations.AnyAsync(x => x.Id == request.OrganizationId);
 
                 if (!exists)
-                    throw new NotFoundException("La organización no existe.");
+                    throw new NotFoundException("La Organización no existe.");
             }
 
             var role = AuthEnum.ParseRole(request.Role);

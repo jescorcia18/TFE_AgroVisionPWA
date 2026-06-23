@@ -28,4 +28,6 @@ public class Inspection : BaseEntity
     public Organization Organization { get; set; } = null!;
     public Plot? Plot { get; set; }
     public ICollection<InspectionImage> Images { get; set; } = new List<InspectionImage>();
+
+    public ICollection<Observation> Observations { get; set; } = new List<Observation>();
 }
