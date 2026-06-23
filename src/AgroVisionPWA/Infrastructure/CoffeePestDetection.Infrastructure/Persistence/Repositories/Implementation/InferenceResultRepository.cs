@@ -50,4 +50,10 @@ public class InferenceResultRepository: IInferenceResultRepository
                 x.ImageId == imageId &&
                 !x.IsDeleted);
     }
+
+    public async Task<bool> ExistsAsync(Guid id)
+    {
+        return await _context.InferenceResults
+            .AnyAsync(x => x.Id == id);
+    }
 }

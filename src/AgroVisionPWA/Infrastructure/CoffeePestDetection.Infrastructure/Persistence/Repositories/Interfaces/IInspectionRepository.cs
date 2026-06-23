@@ -8,4 +8,6 @@ public interface IInspectionRepository
     Task AddAsync(Inspection inspection);
 
     Task<Inspection?> GetByIdAsync(Guid id);
+
+    Task<bool> ExistsAsync(Guid id);
 }
