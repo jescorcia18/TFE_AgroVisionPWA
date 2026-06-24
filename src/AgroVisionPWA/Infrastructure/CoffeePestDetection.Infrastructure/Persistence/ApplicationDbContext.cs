@@ -16,6 +16,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<InferenceResult> InferenceResults => Set<InferenceResult>();
     public DbSet<Observation> Observations { get; set; } = null!;
     public DbSet<SyncLog> SyncLogs { get; set; } = null!;
+    public DbSet<AiModel> AiModels { get; set; } = null!;
+    
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

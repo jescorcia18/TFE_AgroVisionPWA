@@ -51,7 +51,7 @@ public class SyncController : ControllerBase
         return Ok(
             ApiResponse<List<SyncLogDto>>
                 .Ok(
-                    result,
+                    result!,
                     "Logs obtenidos correctamente."));
     }
 
