@@ -23,13 +23,16 @@ public class SyncService : ISyncService
 
     private readonly ISyncLogRepository _syncLogRepository;
 
+    private readonly ITelemetryRepository _telemetryRepository;
+
     public SyncService(
         ApplicationDbContext context,
         IInspectionRepository inspectionRepository,
         IInspectionImageRepository imageRepository,
         IObservationRepository observationRepository,
         IInferenceResultRepository inferenceRepository,
-        ISyncLogRepository syncLogRepository)
+        ISyncLogRepository syncLogRepository,
+        ITelemetryRepository telemetryRepository)
     {
         _context = context;
         _inspectionRepository = inspectionRepository;
@@ -37,6 +40,7 @@ public class SyncService : ISyncService
         _observationRepository = observationRepository;
         _inferenceRepository = inferenceRepository;
         _syncLogRepository = syncLogRepository;
+        _telemetryRepository = telemetryRepository;
     }
 
     public async Task<SyncBulkResponseDto> SyncBulkAsync(SyncBulkRequestDto request)
@@ -71,6 +75,27 @@ public class SyncService : ISyncService
                 var syncedObservations = await SyncObservations(request.Observations);
 
                 var syncedInferenceResults = await SyncInferenceResults(request.InferenceResults);
+
+                foreach (var dto in request.Telemetries)
+                {
+                    var exists = await _telemetryRepository.GetByIdAsync(dto.Id);
+
+                    if (exists is not null)
+                        continue;
+
+                    await _telemetryRepository.AddAsync(
+                        new Telemetry
+                        {
+                            Id = dto.Id,
+                            Timestamp = dto.Timestamp,
+                            PestType = dto.PestType,
+                            Confidence = dto.Confidence,
+                            InferenceTimeMs = dto.InferenceTimeMs,
+                            InspectionCount = dto.InspectionCount,
+                            DeviceHash = dto.DeviceHash,
+                            SyncStatus = "Completed"
+                        });
+                }
 
                 await _context.SaveChangesAsync();
 

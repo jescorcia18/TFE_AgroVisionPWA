@@ -1,11 +1,13 @@
 ﻿using CoffeePestDetection.Application.Commons;
 using CoffeePestDetection.Application.Features.IA.DTOs;
 using CoffeePestDetection.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoffeePestDetection.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/models")]
     public class AiModelController : ControllerBase
     {

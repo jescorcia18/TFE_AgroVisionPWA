@@ -13,4 +13,6 @@ public class SyncBulkRequestDto
     public List<SyncObservationDto> Observations { get; set; } = [];
 
     public List<SyncInferenceResultDto> InferenceResults { get; set; } = [];
+
+    public List<SyncTelemetryDto> Telemetries { get; set; } = [];
 }
