@@ -20,6 +20,12 @@ namespace CoffeePestDetection.Application.Features.InfeResult.DTOs
 
         public string ModelVersion { get; set; } = string.Empty;
 
+        public int? InferenceTimeMs { get; set; }
+
+        public string? TfBackend { get; set; }
+
+        public decimal? DeviceMemoryGb { get; set; }
+
         public decimal Confidence { get; set; }
 
         public DateTime CreatedAt { get; set; }

@@ -17,6 +17,12 @@ public class InferenceResult : BaseEntity
 
     public string? TopKJson { get; set; }
 
+    public int? InferenceTimeMs { get; set; }
+
+    public string? TfBackend { get; set; }
+
+    public decimal? DeviceMemoryGb { get; set; }
+
     // Navigation Properties
 
     public InspectionImage Image { get; set; } = null!;
