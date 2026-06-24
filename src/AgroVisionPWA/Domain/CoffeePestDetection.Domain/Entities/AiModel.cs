@@ -13,7 +13,9 @@ public class AiModel : BaseEntity
 
     public string Version { get; set; } = string.Empty;
 
-    public string DownloadUrl { get; set; } = string.Empty;
+    public string ModelJsonPath { get; set; } = string.Empty;
+
+    public string WeightsPath { get; set; } = string.Empty;
 
     public string? Checksum { get; set; }
 

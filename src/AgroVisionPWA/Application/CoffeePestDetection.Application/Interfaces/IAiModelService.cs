@@ -10,5 +10,9 @@ namespace CoffeePestDetection.Application.Interfaces
     public interface IAiModelService
     {
         Task<ModelVersionDto> GetCurrentModelAsync();
+
+        Task<FileResultDto>DownloadModelJsonAsync();
+
+        Task<FileResultDto>DownloadWeightsAsync();
     }
 }
