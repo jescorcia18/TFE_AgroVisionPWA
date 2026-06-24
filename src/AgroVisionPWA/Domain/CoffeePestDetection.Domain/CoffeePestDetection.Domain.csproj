@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="Services\" />
-    <Folder Include="ValueObjects\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Application\CoffeePestDetection.Application\CoffeePestDetection.Application.csproj" />
   </ItemGroup>
 
