@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CoffeePestDetection.Application.Features.InfeResult.DTOs;
 using CoffeePestDetection.Domain.Entities;
 using CoffeePestDetection.Application.Exceptions;
+using System.Xml.XPath;
 
 namespace CoffeePestDetection.Infrastructure.Services;
 
@@ -68,6 +69,9 @@ public class InferenceResultService : IInferenceResultService
             DiseaseName = disease!.CommonName,
             ModelName = inference.ModelName,
             ModelVersion = inference.ModelVersion,
+            InferenceTimeMs = inference.InferenceTimeMs,
+            TfBackend = inference.TfBackend,
+            DeviceMemoryGb = inference.DeviceMemoryGb,
             Confidence = inference.Confidence,
             CreatedAt = inference.CreatedAt,
             Recommendation = string.IsNullOrEmpty(disease.Recommendation) ? GetRecommendation():disease.Recommendation
@@ -93,6 +97,9 @@ public class InferenceResultService : IInferenceResultService
             DiseaseName = result.PredictedDisease.CommonName,
             ModelName = result.ModelName,
             ModelVersion = result.ModelVersion,
+            InferenceTimeMs = result.InferenceTimeMs,
+            TfBackend = result.TfBackend,
+            DeviceMemoryGb = result.DeviceMemoryGb,
             Confidence = result.Confidence,
             CreatedAt = result.CreatedAt,
             Recommendation = string.IsNullOrEmpty(result.PredictedDisease.Recommendation) ? GetRecommendation() : result.PredictedDisease.Recommendation

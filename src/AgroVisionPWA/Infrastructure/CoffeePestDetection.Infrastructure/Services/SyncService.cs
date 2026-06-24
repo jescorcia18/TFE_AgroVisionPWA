@@ -267,6 +267,9 @@ public class SyncService : ISyncService
                         ModelVersion = item.ModelVersion,
                         Confidence = item.Confidence,
                         TopKJson = item.TopKJson,
+                        InferenceTimeMs = item.InferenceTimeMs,
+                        TfBackend = item.TfBackend,
+                        DeviceMemoryGb = item.DeviceMemoryGb,
                         CreatedAt = DateTime.UtcNow,
                         IsDeleted = false
                     });

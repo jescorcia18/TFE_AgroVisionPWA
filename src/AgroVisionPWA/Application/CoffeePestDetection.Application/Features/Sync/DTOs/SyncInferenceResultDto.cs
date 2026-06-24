@@ -16,4 +16,10 @@ public class SyncInferenceResultDto
     public decimal Confidence { get; set; }
 
     public string? TopKJson { get; set; }
+
+    public int? InferenceTimeMs { get; set; }
+
+    public string? TfBackend { get; set; }
+
+    public decimal? DeviceMemoryGb { get; set; }
 }

@@ -41,6 +41,17 @@ public class InferenceResultConfiguration
         builder.Property(x => x.TopKJson)
             .HasColumnName("top_k_json");
 
+        builder.Property(x => x.InferenceTimeMs)
+            .HasColumnName("inference_time_ms");
+
+        builder.Property(x => x.TfBackend)
+            .HasColumnName("tf_backend")
+            .HasMaxLength(50);
+
+        builder.Property(x => x.DeviceMemoryGb)
+            .HasColumnName("device_memory_gb")
+            .HasPrecision(5, 2);
+
         builder.HasOne(x => x.Image)
             .WithMany(x => x.InferenceResults)
             .HasForeignKey(x => x.ImageId);
