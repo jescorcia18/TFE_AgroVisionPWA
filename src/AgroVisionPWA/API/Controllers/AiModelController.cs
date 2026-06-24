@@ -26,6 +26,17 @@ namespace CoffeePestDetection.API.Controllers
                 ApiResponse<ModelVersionDto>
                     .Ok(result));
         }
+
+        [HttpGet("current/model-json")]
+        public async Task<IActionResult>DownloadModelJson()
+        {
+            var file =await _service.DownloadModelJsonAsync();
+
+            return File(
+                file.Content,
+                file.ContentType,
+                file.FileName);
+        }
     }
 }
 

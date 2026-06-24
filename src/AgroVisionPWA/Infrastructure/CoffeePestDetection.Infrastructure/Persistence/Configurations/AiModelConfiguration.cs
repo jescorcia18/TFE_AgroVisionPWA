@@ -30,10 +30,15 @@ namespace CoffeePestDetection.Infrastructure.Persistence.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.Property(x => x.DownloadUrl)
+            builder.Property(x => x.ModelJsonPath)
                 .HasColumnName("download_url")
                 .HasMaxLength(500)
                 .IsRequired();
+
+            builder.Property(x => x.WeightsPath)
+               .HasColumnName("weightsPath")
+               .HasMaxLength(500)
+               .IsRequired();
 
             builder.Property(x => x.Checksum)
                 .HasColumnName("checksum")
