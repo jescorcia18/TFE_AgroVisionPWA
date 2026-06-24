@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace CoffeePestDetection.API.Controllers
 {
     [ApiController]
-
     [Route("api/organizations")]
 
     public class OrganizationsController: ControllerBase
