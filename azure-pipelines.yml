@@ -12,13 +12,13 @@ steps:
   clean: true
   fetchDepth: 0
 
-- script: |
-    REM Configura la identidad de Git
+- powershell: |
+    # Configura la identidad de Git
     git config --global user.email "azuredevops@microsoft.com"
     git config --global user.name "Azure DevOps Pipeline"
     
-    echo Iniciando sincronizacion limpia con GitHub...
+    Write-Host "Iniciando sincronizacion limpia con GitHub usando PowerShell..."
     
-    REM Envolvemos la URL y las referencias entre comillas dobles para que Windows no destruya la ruta
-    git push --prune "https://github.com" "+refs/remotes/origin/*:refs/heads/*" "+refs/tags/*:refs/tags/*"
+    # En PowerShell ejecutamos el comando directo. Las comillas simples protegen toda la cadena de Git
+    git push --prune "https://github.com/jescorcia18/TFE_AgroVisionPWA" '+refs/remotes/origin/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
   displayName: 'Hacer espejo hacia GitHub'
