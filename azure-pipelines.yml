@@ -52,6 +52,12 @@ steps:
         exit 1
     }
 
+    $response = Invoke-WebRequest `
+    -Uri "https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.scm.eastus-01.azurewebsites.net/api/settings" `
+    -Headers @{ Authorization = "Basic $base64AuthInfo" }
+
+    Write-Host $response.StatusCode
+
     Write-Host "Encontro el archivo .zip para desplegar en $(Build.ArtifactStagingDirectory)."
 
     Write-Host "Preparando token de autenticación para Azure..."
@@ -60,7 +66,7 @@ steps:
     Write-Host "Conectando con la nube de Azure y subiendo paquete a tu cuenta gratis..."
 
     # 2. Tu URL administrativa configurada correctamente con el formato de Azure
-    $uri = "https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.scm.eastus-01.azurewebsites.net/api/zipdeploy"
+    $uri = "https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.scm.eastus-01.azurewebsites.net/api/publish?type=zip"
 
     Write-Host $uri
 
