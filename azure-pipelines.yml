@@ -1,0 +1,31 @@
+trigger:
+  branches:
+    include:
+      - '*' # Se activa con cambios en cualquier rama
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+- group: Github-Mirror-Vars # Vincula el grupo de variables que creamos
+
+steps:
+- checkout: self
+  persistCredentials: true
+  clean: true
+  fetchDepth: 0 # Descarga todo el historial para evitar errores de sincronización
+
+- script: |
+    # Configura la identidad de Git
+    git config --global user.email "azuredevops@microsoft.com"
+    git config --global user.name "Azure DevOps Pipeline"
+    
+    # Formatea la URL de GitHub incluyendo el token de seguridad de manera segura
+    # Reemplaza TU_USUARIO y TU_REPO con tus datos reales de GitHub
+    TARGET_REPO="https://github.com/jescorcia18/TFE_AgroVisionPWA"
+    
+    echo "Iniciando sincronización con GitHub..."
+    
+    # Sincroniza todas las ramas y etiquetas hacia GitHub
+    git push --prune $TARGET_REPO +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*
+  displayName: 'Hacer espejo hacia GitHub'
