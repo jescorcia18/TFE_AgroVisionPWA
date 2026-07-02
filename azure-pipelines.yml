@@ -38,7 +38,7 @@ steps:
     # 1. Abre tu archivo .PublishSettings descargado y pon los datos exactos aquí adentro
     $username = '$App-AgroVisionPWA' 
     $password = 'xPgFknQNA92bfXxe2mvAkd8CgynRpNod5wmidia85yrDGEFqspfzxJ8Ha8TR'
-    $webappName = 'App-AgroVisionPWA'
+    $webappName = 'app-agrovisionpwa'
 
     # 2. Generar el Token de Autorización Seguro
     $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
