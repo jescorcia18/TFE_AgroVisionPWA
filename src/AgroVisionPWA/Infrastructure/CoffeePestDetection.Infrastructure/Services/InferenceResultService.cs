@@ -72,7 +72,7 @@ public class InferenceResultService : IInferenceResultService
             InferenceTimeMs = inference.InferenceTimeMs,
             TfBackend = inference.TfBackend,
             DeviceMemoryGb = inference.DeviceMemoryGb,
-            Confidence = inference.Confidence,
+            Confidence = inference.Confidence.Value,
             CreatedAt = inference.CreatedAt,
             Recommendation = string.IsNullOrEmpty(disease.Recommendation) ? GetRecommendation():disease.Recommendation
         };
@@ -100,7 +100,7 @@ public class InferenceResultService : IInferenceResultService
             InferenceTimeMs = result.InferenceTimeMs,
             TfBackend = result.TfBackend,
             DeviceMemoryGb = result.DeviceMemoryGb,
-            Confidence = result.Confidence,
+            Confidence = result.Confidence!.Value,
             CreatedAt = result.CreatedAt,
             Recommendation = string.IsNullOrEmpty(result.PredictedDisease.Recommendation) ? GetRecommendation() : result.PredictedDisease.Recommendation
         };

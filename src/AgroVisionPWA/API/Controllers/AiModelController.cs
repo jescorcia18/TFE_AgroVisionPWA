@@ -30,9 +30,9 @@ namespace CoffeePestDetection.API.Controllers
         }
 
         [HttpGet("current/model-json")]
-        public async Task<IActionResult>DownloadModelJson()
+        public async Task<IActionResult>DownloadModelJson([FromServices] IWebHostEnvironment env)
         {
-            var file =await _service.DownloadModelJsonAsync();
+            var file =await _service.DownloadModelJsonAsync(env.WebRootPath);
 
             return File(
                 file.Content,

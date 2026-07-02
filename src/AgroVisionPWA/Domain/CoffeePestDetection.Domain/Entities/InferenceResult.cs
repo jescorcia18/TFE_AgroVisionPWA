@@ -13,7 +13,7 @@ public class InferenceResult : BaseEntity
 
     public string ModelVersion { get; set; } = string.Empty;
 
-    public decimal Confidence { get; set; }
+    public decimal? Confidence { get; set; }
 
     public string? TopKJson { get; set; }
 

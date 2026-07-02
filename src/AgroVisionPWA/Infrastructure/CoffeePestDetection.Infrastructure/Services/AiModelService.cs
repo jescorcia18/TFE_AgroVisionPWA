@@ -37,14 +37,23 @@ namespace CoffeePestDetection.Infrastructure.Services
             };
         }
 
-        public async Task<FileResultDto> DownloadModelJsonAsync()
+        public async Task<FileResultDto> DownloadModelJsonAsync(string webRootPath)
         {
             var model = await _repository.GetCurrentModelAsync();
 
             if (model is null)
                 throw new NotFoundException("No existe modelo activo.");
 
-            var bytes = await File.ReadAllBytesAsync(model.ModelJsonPath);
+            // 3. Limpiamos los caracteres de barras iniciales para evitar conflictos con Path.Combine
+            string relativePath = model.ModelJsonPath.TrimStart('/', '\\');
+
+            // 4. Combinamos: D:\...\AgroVisionPWA\API\wwwroot + models\coffee_detector\1.0.0\model.json
+            string fullPhysicalPath = Path.Combine(webRootPath, relativePath);
+
+            if (!System.IO.File.Exists(fullPhysicalPath))
+                throw new NotFoundException("El archivo físico del modelo no se encontró.");
+
+            var bytes = await File.ReadAllBytesAsync(fullPhysicalPath);
 
             return new FileResultDto
             {

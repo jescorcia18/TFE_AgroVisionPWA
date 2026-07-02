@@ -69,6 +69,7 @@ public class DiseaseCatalogService : IDiseaseCatalogService
             {
                 Id = Guid.NewGuid(),
                 CommonName = request.CommonName.Trim(),
+                Recommendation = request.Recommendation,
                 CreatedAt = DateTime.UtcNow,
                 IsDeleted = false
             };

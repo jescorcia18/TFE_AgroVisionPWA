@@ -1,11 +1,12 @@
 ﻿
 using CoffeePestDetection.Application.Commons;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoffeePestDetection.Domain.Entities;
 
 public class DiseaseCatalog : BaseEntity
 {
-
+    [Column("common_name")]
     public string CommonName { get; set; } = string.Empty;
 
     public string Recommendation { get; set; } = string.Empty;
