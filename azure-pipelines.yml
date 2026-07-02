@@ -52,7 +52,10 @@ steps:
 
     Write-Host "Conectando con la nube de Azure y subiendo paquete a tu cuenta gratis..."
     # 2. Tu URL administrativa configurada correctamente con el formato de Azure
-    $uri = "https://azurewebsites.net"
+    $parte1 = "https://app-agrovisionpwa.scm."
+    $parte2 = "hhgcgwhwhpbpf0f6.eastus-01"
+    $parte3 = ".azurewebsites.net/api/zipdeploy"
+    $uri = $parte1 + $parte2 + $parte3
     
     # 3. Enviar el archivo ZIP mediante la petición web directa
     Invoke-RestMethod -Uri $uri -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Method Post -InFile $zipPath -ContentType "multipart/form-data" -TimeoutSec 600
