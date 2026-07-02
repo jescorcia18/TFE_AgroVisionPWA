@@ -20,12 +20,8 @@ steps:
     git config --global user.email "azuredevops@microsoft.com"
     git config --global user.name "Azure DevOps Pipeline"
     
-    REM Configura la URL destino usando la sintaxis de variables de Windows
-    set TARGET_REPO=https://x-access-token:$(GithubToken)@://github.com
-    
     echo Iniciando sincronizacion con GitHub...
     
-    REM Sincroniza usando los porcentajes para la variable de entorno de Windows
-    git push --prune %TARGET_REPO% +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*
+    REM Inyectamos la variable directamente en la línea de Git para evitar fallos de asignación en CMD
+    git push --prune https://x-access-token:$(GithubToken)@://github.com +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*
   displayName: 'Hacer espejo hacia GitHub'
-
