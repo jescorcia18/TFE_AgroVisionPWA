@@ -33,16 +33,14 @@ steps:
     # Argumentos para empaquetar la aplicación en una carpeta temporal
     arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
 
-# --- PASO 3: Desplegar a Azure mediante API ZipDeploy nativa (CON COPIAR Y PEGAR DE TU XML) ---
+# --- PASO 3: Desplegar a Azure de forma nativa (Validado sin rutas manuales) ---
 - powershell: |
-    # 1. Abre tu archivo .PublishSettings descargado y pon los datos exactos aquí adentro
-    $username = '$App-AgroVisionPWA' 
-    $password = 'xPgFknQNA92bfXxe2mvAkd8CgynRpNod5wmidia85yrDGEFqspfzxJ8Ha8TR'
-    
-    Write-Host "Preparando credenciales de autenticación..."
-    $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
+    # 1. Credenciales obligatorias extraídas de tu archivo .PublishSettings
+    $username = 'REEMPLAZA_CON_EL_userName_DE_TU_XML' 
+    $password = 'REEMPLAZA_CON_EL_userPWD_DE_TU_XML'
 
     Write-Host "Buscando el archivo empaquetado de tu API de .NET 9..."
+    # 2. Localizar el archivo comprimido .zip generado por la compilación anterior
     $zipPath = Get-ChildItem "$(Build.ArtifactStagingDirectory)\*.zip" | Select-Object -First 1 -ExpandProperty FullName
     
     if (-not $zipPath) {
@@ -50,15 +48,15 @@ steps:
         exit 1
     }
 
-    Write-Host "Conectando con la nube de Azure y subiendo paquete a tu cuenta gratis..."
-    # 2. Tu URL administrativa configurada correctamente con el formato de Azure
-    $parte1 = "https://app-agrovisionpwa-"
-    $parte2 = "hhgcgwhwhpbpf0f6.eastus-01"
-    $parte3 = ".azurewebsites.net/api/wardeploy?type=zip"
-    $uri = $parte1 + $parte2 + $parte3
+    Write-Host "Preparando token de autenticación para Azure..."
+    $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
+
+    Write-Host "Conectando con la API de Despliegue de Azure (Evitando 404)..."
+    # 3. RUTA NATIVA DE KUDU COMPATIBLE CON PLANES GRATIS LINUX
+    $uri = "https://azurewebsites.net"
+
+    # 4. Enviar el paquete comprimido de .NET 9 mediante un método POST directo de publicación
+    Invoke-RestMethod -Uri $uri -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo); "Content-Disposition"="attachment; filename=package.zip"} -Method Post -InFile $zipPath -ContentType "application/zip" -TimeoutSec 600
     
-    # 3. Enviar el archivo ZIP mediante la petición web directa
-    Invoke-RestMethod -Uri $uri -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Method Post -InFile $zipPath -ContentType "multipart/form-data" -TimeoutSec 600
-    
-    Write-Host "¡Subida terminada y despliegue completado con éxito!"
+    Write-Host "¡Subida terminada y despliegue completado con éxito en tu App Service!"
   displayName: 'Desplegar Web API a Azure Gratis'
