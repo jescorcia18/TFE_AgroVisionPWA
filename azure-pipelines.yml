@@ -4,7 +4,7 @@ trigger:
       - '*' # Se activa con cambios en cualquier rama
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'Default' # Ejecuta el pipeline en tu máquina configurada
 
 variables:
 - group: Github-Mirror-Vars # Vincula el grupo de variables que creamos
@@ -22,7 +22,7 @@ steps:
     
     # Formatea la URL de GitHub incluyendo el token de seguridad de manera segura
     # Reemplaza TU_USUARIO y TU_REPO con tus datos reales de GitHub
-    TARGET_REPO="https://github.com/jescorcia18/TFE_AgroVisionPWA"
+    TARGET_REPO="https://x-access-token:$(GithubToken)@://github.com"
     
     echo "Iniciando sincronización con GitHub..."
     
