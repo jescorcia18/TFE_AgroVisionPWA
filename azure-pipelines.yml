@@ -54,7 +54,7 @@ steps:
     # 2. Tu URL administrativa configurada correctamente con el formato de Azure
     $parte1 = "https://app-agrovisionpwa-"
     $parte2 = "hhgcgwhwhpbpf0f6.eastus-01"
-    $parte3 = ".azurewebsites.net/api/zipdeploy"
+    $parte3 = ".azurewebsites.net/api/wardeploy?type=zip"
     $uri = $parte1 + $parte2 + $parte3
     
     # 3. Enviar el archivo ZIP mediante la petición web directa
