@@ -19,6 +19,6 @@ steps:
     
     echo Iniciando sincronizacion limpia con GitHub...
     
-    REM Al usar la URL limpia, Git tomara el token guardado en tu Administrador de Credenciales de Windows
-    git push --prune https://github.com +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*
+    REM Envolvemos la URL y las referencias entre comillas dobles para que Windows no destruya la ruta
+    git push --prune "https://github.com" "+refs/remotes/origin/*:refs/heads/*" "+refs/tags/*:refs/tags/*"
   displayName: 'Hacer espejo hacia GitHub'
