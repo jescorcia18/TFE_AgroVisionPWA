@@ -38,23 +38,23 @@ steps:
     # 1. Abre tu archivo .PublishSettings descargado y pon los datos exactos aquí adentro
     $username = '$App-AgroVisionPWA' 
     $password = 'xPgFknQNA92bfXxe2mvAkd8CgynRpNod5wmidia85yrDGEFqspfzxJ8Ha8TR'
-    $webappName = 'app-agrovisionpwa'
-
-    # 2. Generar el Token de Autorización Seguro
+    
+    Write-Host "Preparando credenciales de autenticación..."
     $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
 
-    # 3. Localizar el archivo empaquetado .zip creado en el Paso 2
+    Write-Host "Buscando el archivo empaquetado de tu API de .NET 9..."
     $zipPath = Get-ChildItem "$(Build.ArtifactStagingDirectory)\*.zip" | Select-Object -First 1 -ExpandProperty FullName
     
     if (-not $zipPath) {
-        Write-Error "No se encontró ningún archivo .zip para desplegar en $(Build.ArtifactStagingDirectory)"
+        Write-Error "Error: No se encontró ningún archivo .zip para desplegar en $(Build.ArtifactStagingDirectory)."
         exit 1
     }
 
-    Write-Host "Conectando con la nube de Azure subiendo paquete..."
+    Write-Host "Conectando con la nube de Azure y subiendo paquete a tu cuenta gratis..."
+    # 2. Tu URL administrativa configurada correctamente con el formato de Azure
+    $uri = "https://azurewebsites.net"
     
-    # 4. Petición HTTP directa al motor de Azure (Evita validar credenciales en DevOps)
-    $uri = "https://$webappName.scm.azurewebsites.net/api/zipdeploy"
+    # 3. Enviar el archivo ZIP mediante la petición web directa
     Invoke-RestMethod -Uri $uri -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Method Post -InFile $zipPath -ContentType "multipart/form-data" -TimeoutSec 600
     
     Write-Host "¡Subida terminada y despliegue completado con éxito!"
