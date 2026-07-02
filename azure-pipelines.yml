@@ -12,6 +12,7 @@ steps:
   clean: true
   fetchDepth: 0
 
+# --- PASO 1: sincronización existente con GitHub ---
 - powershell: |
     # Configura la identidad de Git
     git config --global user.email "azuredevops@microsoft.com"
@@ -22,3 +23,39 @@ steps:
     # En PowerShell ejecutamos el comando directo. Las comillas simples protegen toda la cadena de Git
     git push --prune "https://github.com/jescorcia18/TFE_AgroVisionPWA" '+refs/remotes/origin/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
   displayName: 'Hacer espejo hacia GitHub'
+
+  # --- PASO 2: Compilar  API .NET 9 (En máquina Local) ---
+- task: DotNetCoreCLI@2
+  displayName: 'Compilar y Publicar API .NET 9'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    # Argumentos para empaquetar la aplicación en una carpeta temporal
+    arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+
+# --- PASO 3: Desplegar a Azure mediante API ZipDeploy nativa (CON COPIAR Y PEGAR DE TU XML) ---
+- powershell: |
+    # 1. Abre tu archivo .PublishSettings descargado y pon los datos exactos aquí adentro
+    $username = '$App-AgroVisionPWA' 
+    $password = 'xPgFknQNA92bfXxe2mvAkd8CgynRpNod5wmidia85yrDGEFqspfzxJ8Ha8TR'
+    $webappName = 'App-AgroVisionPWA'
+
+    # 2. Generar el Token de Autorización Seguro
+    $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
+
+    # 3. Localizar el archivo empaquetado .zip creado en el Paso 2
+    $zipPath = Get-ChildItem "$(Build.ArtifactStagingDirectory)\*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    
+    if (-not $zipPath) {
+        Write-Error "No se encontró ningún archivo .zip para desplegar en $(Build.ArtifactStagingDirectory)"
+        exit 1
+    }
+
+    Write-Host "Conectando con la nube de Azure subiendo paquete..."
+    
+    # 4. Petición HTTP directa al motor de Azure (Evita validar credenciales en DevOps)
+    $uri = "https://$webappName.scm.azurewebsites.net/api/zipdeploy"
+    Invoke-RestMethod -Uri $uri -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Method Post -InFile $zipPath -ContentType "multipart/form-data" -TimeoutSec 600
+    
+    Write-Host "¡Subida terminada y despliegue completado con éxito!"
+  displayName: 'Desplegar Web API a Azure Gratis'
