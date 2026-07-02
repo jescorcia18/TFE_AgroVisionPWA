@@ -11,7 +11,7 @@ namespace CoffeePestDetection.Application.Interfaces
     {
         Task<ModelVersionDto> GetCurrentModelAsync();
 
-        Task<FileResultDto>DownloadModelJsonAsync();
+        Task<FileResultDto>DownloadModelJsonAsync(string webRootPath);
 
         Task<FileResultDto>DownloadWeightsAsync();
     }

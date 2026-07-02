@@ -16,10 +16,12 @@ public class DiseaseCatalogRepository : IDiseaseCatalogRepository
 
     public async Task<List<DiseaseCatalog>> GetAllAsync()
     {
-        return await _context.DiseaseCatalogs
+        var result=  await _context.DiseaseCatalogs
             .Where(x => !x.IsDeleted)
             .OrderBy(x => x.CommonName)
             .ToListAsync();
+
+        return result;
     }
 
     public async Task<DiseaseCatalog?> GetByIdAsync(Guid id)

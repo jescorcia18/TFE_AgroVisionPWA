@@ -135,6 +135,8 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles(); //Habilitar archivos estáticos (para el IAModel)
+
 app.UseCors("PermitirTodoConCredenciales"); // Cors
 
 app.UseAuthentication(); //pipeline

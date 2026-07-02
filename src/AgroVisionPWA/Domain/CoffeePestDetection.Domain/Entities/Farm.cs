@@ -16,7 +16,7 @@ namespace CoffeePestDetection.Domain.Entities
 
         public string? Location { get; set; }
 
-        public double? AreaHectares { get; set; }
+        public decimal? AreaHectares { get; set; }
 
         public bool IsActive { get; set; } = true;
         /** FK */

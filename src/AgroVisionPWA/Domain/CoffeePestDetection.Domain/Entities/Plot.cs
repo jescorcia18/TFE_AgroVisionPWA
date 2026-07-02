@@ -13,7 +13,7 @@ public class Plot : BaseEntity
     public string Code { get; set; } = string.Empty;
     public string? Description { get; set; }
     /** Tamaño del lote*/
-    public double?AreaHectares{ get; set;}
+    public decimal? AreaHectares{ get; set;}
     public bool IsActive{ get; set; } = true;
     /** FK*/
     public Guid FarmId { get; set; }
