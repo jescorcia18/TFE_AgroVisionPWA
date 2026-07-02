@@ -52,7 +52,7 @@ steps:
 
     Write-Host "Conectando con la nube de Azure y subiendo paquete a tu cuenta gratis..."
     # 2. Tu URL administrativa configurada correctamente con el formato de Azure
-    $parte1 = "https://app-agrovisionpwa.scm."
+    $parte1 = "https://app-agrovisionpwa-"
     $parte2 = "hhgcgwhwhpbpf0f6.eastus-01"
     $parte3 = ".azurewebsites.net/api/zipdeploy"
     $uri = $parte1 + $parte2 + $parte3
