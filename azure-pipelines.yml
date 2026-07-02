@@ -48,6 +48,8 @@ steps:
         exit 1
     }
 
+    Write-Host "Encontro el archivo .zip para desplegar en $(Build.ArtifactStagingDirectory)."
+
     Write-Host "Preparando token de autenticación para Azure..."
     $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
 
@@ -55,11 +57,11 @@ steps:
     # 2. Tu URL administrativa configurada correctamente con el formato de Azure
     $parte1 = "https://app-agrovisionpwa-"
     $parte2 = "hhgcgwhwhpbpf0f6.eastus-01"
-    $parte3 = ".azurewebsites.net/api/wardeploy?type=zip"
+    $parte3 = ".azurewebsites.net/api/zipdeploy"
     $uri = $parte1 + $parte2 + $parte3
 
-    # 4. Enviar el paquete comprimido de .NET 9 mediante un método POST directo de publicación
-    Invoke-RestMethod -Uri $uri -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo); "Content-Disposition"="attachment; filename=package.zip"} -Method Post -InFile $zipPath -ContentType "application/zip" -TimeoutSec 600
+     # 3. Envío directo del archivo crudo (Evita el error 404 y fallos de formato)
+    Invoke-RestMethod -Uri $uri -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Method Post -InFile $zipPath -ContentType "application/octet-stream" -TimeoutSec 600
     
-    Write-Host "¡Subida terminada y despliegue completado con éxito en tu App Service!"
+    Write-Host "¡Subida terminada y despliegue completado con éxito!"
   displayName: 'Desplegar Web API a Azure Gratis'
