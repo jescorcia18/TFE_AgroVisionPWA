@@ -4,10 +4,7 @@ trigger:
       - '*'
 
 pool:
-  name: 'Default' # Tu máquina local
-
-variables:
-- group: Github-Mirror-Vars
+  name: 'Default' # Tu máquina local como servidor
 
 steps:
 - checkout: self
@@ -20,8 +17,8 @@ steps:
     git config --global user.email "azuredevops@microsoft.com"
     git config --global user.name "Azure DevOps Pipeline"
     
-    echo Iniciando sincronizacion con GitHub...
+    echo Iniciando sincronizacion limpia con GitHub...
     
-    REM Inyectamos la variable directamente en la línea de Git para evitar fallos de asignación en CMD
-    git push --prune https://x-access-token:$(GithubToken)@://github.com +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*
+    REM Al usar la URL limpia, Git tomara el token guardado en tu Administrador de Credenciales de Windows
+    git push --prune https://github.com +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*
   displayName: 'Hacer espejo hacia GitHub'
