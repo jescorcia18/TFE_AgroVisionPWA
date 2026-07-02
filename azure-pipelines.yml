@@ -52,16 +52,22 @@ steps:
         exit 1
     }
 
-    $response = Invoke-WebRequest `
-    -Uri "https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.scm.eastus-01.azurewebsites.net/api/settings" `
-    -Headers @{ Authorization = "Basic $base64AuthInfo" }
-
-    Write-Host $response.StatusCode
-
     Write-Host "Encontro el archivo .zip para desplegar en $(Build.ArtifactStagingDirectory)."
 
     Write-Host "Preparando token de autenticación para Azure..."
-    $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
+    $pair = "$($username):$($password)"
+    $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair)
+    $base64AuthInfo = [Convert]::ToBase64String($bytes)
+
+    $headers = @{
+        Authorization = "Basic $base64AuthInfo"
+    }
+
+    Invoke-WebRequest '
+    -Uri "https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.scm.eastus-01.azurewebsites.net/api/settings" '
+    -Headers $headers
+
+    Write-Host $response.StatusCode
 
     Write-Host "Conectando con la nube de Azure y subiendo paquete a tu cuenta gratis..."
 
