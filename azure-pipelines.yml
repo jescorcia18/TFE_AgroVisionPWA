@@ -36,10 +36,14 @@ steps:
 # --- PASO 3: Desplegar a Azure de forma nativa (Validado sin rutas manuales) ---
 - powershell: |
     # 1. Credenciales obligatorias extraídas de tu archivo .PublishSettings
-    $username = 'REEMPLAZA_CON_EL_userName_DE_TU_XML' 
-    $password = 'REEMPLAZA_CON_EL_userPWD_DE_TU_XML'
+    $username = '$App-AgroVisionPWA' 
+    $password = 'xPgFknQNA92bfXxe2mvAkd8CgynRpNod5wmidia85yrDGEFqspfzxJ8Ha8TR'
 
     Write-Host "Buscando el archivo empaquetado de tu API de .NET 9..."
+
+    Write-Host "Contenido del ArtifactStagingDirectory"
+    Get-ChildItem "$(Build.ArtifactStagingDirectory)" -Recurse | Format-Table FullName
+
     # 2. Localizar el archivo comprimido .zip generado por la compilación anterior
     $zipPath = Get-ChildItem "$(Build.ArtifactStagingDirectory)\*.zip" | Select-Object -First 1 -ExpandProperty FullName
     
@@ -54,11 +58,20 @@ steps:
     $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
 
     Write-Host "Conectando con la nube de Azure y subiendo paquete a tu cuenta gratis..."
+
     # 2. Tu URL administrativa configurada correctamente con el formato de Azure
-    $parte1 = "https://app-agrovisionpwa-"
-    $parte2 = "hhgcgwhwhpbpf0f6.eastus-01"
-    $parte3 = ".azurewebsites.net/api/zipdeploy"
-    $uri = $parte1 + $parte2 + $parte3
+    $uri = "https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.scm.eastus-01.azurewebsites.net/api/zipdeploy"
+
+    Write-Host $uri
+
+    try {
+        Invoke-WebRequest `
+        -Uri "https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.scm.eastus-01.azurewebsites.net" `
+        -UseBasicParsing
+    }
+    catch {
+        Write-Host $_.Exception.Response.StatusCode
+    }
 
      # 3. Envío directo del archivo crudo (Evita el error 404 y fallos de formato)
     Invoke-RestMethod -Uri $uri -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)} -Method Post -InFile $zipPath -ContentType "application/octet-stream" -TimeoutSec 600
