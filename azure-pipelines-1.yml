@@ -1,0 +1,33 @@
+trigger:
+- main  # Cambia por tu rama principal si es master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# 1. Instalar el SDK de .NET 9
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '9.x'
+
+# 2. Restaurar dependencias, compilar y empaquetar tu API
+- task: DotNetCoreCLI@2
+  displayName: 'Compilar y Publicar API .NET 9'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true # Compila automáticamente proyectos web del repositorio
+    arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+
+# 3. Desplegar directo a Azure usando el Perfil de Publicación (Sin conexiones globales)
+- task: AzureWebApp@1
+  displayName: 'Desplegar a Azure App Service Gratis'
+  inputs:
+    azureSubscription: '' # SE DEJA VACÍO DE FORMA OBLIGATORIA
+    appType: 'webAppLinux' # Coloca 'webApp' si tu App Service gratis lo creaste en Windows
+    appName: 'App-AgroVisionPWA'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    
+    # Aquí le indicamos a DevOps que use las credenciales del archivo descargado
+    connectionType: 'PublishProfile' 
+    publishProfilePassword: '<publishData><publishProfile profileName="App-AgroVisionPWA - Web Deploy" publishMethod="MSDeploy" publishUrl="app-agrovisionpwa-hhgcgwhwhpbpf0f6.scm.eastus-01.azurewebsites.net:443" msdeploySite="App-AgroVisionPWA" userName="$App-AgroVisionPWA" userPWD="xPgFknQNA92bfXxe2mvAkd8CgynRpNod5wmidia85yrDGEFqspfzxJ8Ha8TR" destinationAppUrl="https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.eastus-01.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="App-AgroVisionPWA - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-blu-103.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="App-AgroVisionPWA\$App-AgroVisionPWA" userPWD="xPgFknQNA92bfXxe2mvAkd8CgynRpNod5wmidia85yrDGEFqspfzxJ8Ha8TR" destinationAppUrl="https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.eastus-01.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="App-AgroVisionPWA - Zip Deploy" publishMethod="ZipDeploy" publishUrl="app-agrovisionpwa-hhgcgwhwhpbpf0f6.scm.eastus-01.azurewebsites.net:443" userName="$App-AgroVisionPWA" userPWD="xPgFknQNA92bfXxe2mvAkd8CgynRpNod5wmidia85yrDGEFqspfzxJ8Ha8TR" destinationAppUrl="https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.eastus-01.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="App-AgroVisionPWA - ReadOnly - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-blu-103dr.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="App-AgroVisionPWA\$App-AgroVisionPWA" userPWD="xPgFknQNA92bfXxe2mvAkd8CgynRpNod5wmidia85yrDGEFqspfzxJ8Ha8TR" destinationAppUrl="https://app-agrovisionpwa-hhgcgwhwhpbpf0f6.eastus-01.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile></publishData>'
