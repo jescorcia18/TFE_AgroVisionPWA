@@ -51,9 +51,12 @@ steps:
     Write-Host "Preparando token de autenticación para Azure..."
     $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $username, $password)))
 
-    Write-Host "Conectando con la API de Despliegue de Azure (Evitando 404)..."
-    # 3. RUTA NATIVA DE KUDU COMPATIBLE CON PLANES GRATIS LINUX
-    $uri = "https://azurewebsites.net"
+    Write-Host "Conectando con la nube de Azure y subiendo paquete a tu cuenta gratis..."
+    # 2. Tu URL administrativa configurada correctamente con el formato de Azure
+    $parte1 = "https://app-agrovisionpwa-"
+    $parte2 = "hhgcgwhwhpbpf0f6.eastus-01"
+    $parte3 = ".azurewebsites.net/api/wardeploy?type=zip"
+    $uri = $parte1 + $parte2 + $parte3
 
     # 4. Enviar el paquete comprimido de .NET 9 mediante un método POST directo de publicación
     Invoke-RestMethod -Uri $uri -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo); "Content-Disposition"="attachment; filename=package.zip"} -Method Post -InFile $zipPath -ContentType "application/zip" -TimeoutSec 600
