@@ -1,4 +1,5 @@
 ﻿using CoffeePestDetection.Application.Commons;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoffeePestDetection.Domain.Entities;
 
@@ -24,4 +25,10 @@ public class SyncLog : BaseEntity
     public DateTime StartedAt { get; set; }
 
     public DateTime? FinishedAt { get; set; }
+
+    [Column ("exception_type")]
+    public string? ExceptionType { get; set; } = string.Empty;
+
+    [Column("execution_time_ms")]
+    public int? ExecutionTimeMs { get; set; }
 }

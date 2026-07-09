@@ -58,5 +58,11 @@ public class SyncLogConfiguration: IEntityTypeConfiguration<SyncLog>
 
         builder.Property(x => x.IsDeleted)
             .HasColumnName("is_deleted");
+
+        builder.Property(x => x.ExceptionType)
+            .HasColumnName("exception_type");
+
+        builder.Property(x => x.ExecutionTimeMs)
+            .HasColumnName("execution_time_ms");
     }
 }
