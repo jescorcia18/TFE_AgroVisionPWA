@@ -6,6 +6,7 @@ using CoffeePestDetection.Domain.Entities;
 using CoffeePestDetection.Domain.Enums.Features.Sync;
 using CoffeePestDetection.Application.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace CoffeePestDetection.Infrastructure.Services;
 
@@ -45,6 +46,8 @@ public class SyncService : ISyncService
 
     public async Task<SyncBulkResponseDto> SyncBulkAsync(SyncBulkRequestDto request)
     {
+        var stopwatch = Stopwatch.StartNew();
+
         var strategy =_context.Database.CreateExecutionStrategy();
 
         return await strategy.ExecuteAsync(async () =>
@@ -53,21 +56,11 @@ public class SyncService : ISyncService
                 await _context.Database
                     .BeginTransactionAsync();
 
-            var syncLog = new SyncLog
-            {
-                Id = Guid.NewGuid(),
-                DeviceId = request.DeviceId,
-                Status = SyncLogEnum.Status.Pending.ToString(),
-                StartedAt = DateTime.UtcNow,
-                CreatedAt = DateTime.UtcNow,
-                IsDeleted = false
-            };
-            await _syncLogRepository.AddAsync(syncLog);
+            // registrar synclog como pendiente
+            var syncLog = await _syncLogRepository.CreatePendingAsync(request.DeviceId);
 
             try
             {
-                await _context.SaveChangesAsync();
-
                 var syncedInspections = await SyncInspections(request.Inspections);
 
                 var syncedImages = await SyncImages(request.Images);
@@ -93,7 +86,8 @@ public class SyncService : ISyncService
                             InferenceTimeMs = dto.InferenceTimeMs,
                             InspectionCount = dto.InspectionCount,
                             DeviceHash = dto.DeviceHash,
-                            SyncStatus = "Completed"
+                            SyncStatus = "Completed",
+                            CreatedAt = DateTime.UtcNow
                         });
                 }
 
@@ -106,7 +100,23 @@ public class SyncService : ISyncService
                 syncLog.SyncedObservations = syncedObservations;
                 syncLog.SyncedInferenceResults = syncedInferenceResults;
                 syncLog.FinishedAt = DateTime.UtcNow;
+
                 await transaction.CommitAsync();
+
+                stopwatch.Stop();
+
+                // Marcar log de sincronización como exitoso
+                await _syncLogRepository.MarkAsSuccessAsync(
+                    syncLog.Id,
+                    syncedInspections +
+                    syncedImages +
+                    syncedObservations +
+                    syncedInferenceResults,
+                    syncedInspections,
+                    syncedImages,
+                    syncedObservations,
+                    syncedInferenceResults,
+                    (int)stopwatch.ElapsedMilliseconds);
 
                 return new SyncBulkResponseDto
                 {
@@ -128,12 +138,17 @@ public class SyncService : ISyncService
             }
             catch (Exception ex)
             {
-                syncLog.Status = "Failed";
-                syncLog.ErrorMessage = ex.Message;
-                syncLog.FinishedAt = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
-
                 await transaction.RollbackAsync();
+
+                stopwatch.Stop();
+
+                // Marcar en el log como sincronización failed
+                await _syncLogRepository.MarkAsFailedAsync(
+                    syncLog.Id,
+                    ex.ToString(),
+                    ex.GetType().Name,
+                    (int)stopwatch.ElapsedMilliseconds);
+
                 throw;
             }
         });
