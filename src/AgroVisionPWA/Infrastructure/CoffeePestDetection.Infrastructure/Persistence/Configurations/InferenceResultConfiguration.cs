@@ -67,6 +67,6 @@ public class InferenceResultConfiguration
             .HasColumnName("updated_at");
 
         builder.Property(x => x.IsDeleted)
-            .HasColumnName("is_deleted");
+            .HasColumnName("IsDeleted");
     }
 }

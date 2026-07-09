@@ -33,13 +33,13 @@ public class ObservationConfiguration : IEntityTypeConfiguration<Observation>
             .HasMaxLength(50);
 
         builder.Property(x => x.CreatedAt)
-            .HasColumnName("created_at");
+            .HasColumnName("created_At");
 
         builder.Property(x => x.UpdatedAt)
-            .HasColumnName("updated_at");
+            .HasColumnName("updated_At");
 
         builder.Property(x => x.IsDeleted)
-            .HasColumnName("is_deleted");
+            .HasColumnName("IsDeleted");
 
         builder.HasOne(x => x.Inspection)
             .WithMany(x => x.Observations)
