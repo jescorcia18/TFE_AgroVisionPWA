@@ -120,13 +120,16 @@ app.UseMiddleware<ExceptionMiddleware>();
 //}
 
 // Agregar ejecución de Seed para usuario Admin
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment())
 {
-    var context =
-        scope.ServiceProvider
-            .GetRequiredService<ApplicationDbContext>();
+    using (var scope = app.Services.CreateScope())
+    {
+        var context =
+            scope.ServiceProvider
+                .GetRequiredService<ApplicationDbContext>();
 
-    await DataSeeder.SeedAsync(context);
+        await DataSeeder.SeedAsync(context);
+    }
 }
 
 app.UseSwagger();
