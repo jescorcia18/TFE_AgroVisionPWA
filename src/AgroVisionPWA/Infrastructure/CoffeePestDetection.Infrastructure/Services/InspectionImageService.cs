@@ -11,6 +11,8 @@ using CoffeePestDetection.Infrastructure.Persistence.Repositories.Implementation
 using CoffeePestDetection.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using CoffeePestDetection.Application.Exceptions;
+using CoffeePestDetection.Domain.Enums.Features.Sync;
+using CoffeePestDetection.Domain.Enums;
 
 namespace CoffeePestDetection.Infrastructure.Services;
 
@@ -95,7 +97,8 @@ public class InspectionImageService : IInspectionImageService
             Width = request.Width,
             Height = request.Height,
             DeviceId = request.DeviceId,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            SyncStatus = SyncLogEnum.Status.Success.GetDescription()
         };
 
         await _imageRepo.AddAsync(image);
