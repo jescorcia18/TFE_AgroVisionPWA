@@ -34,7 +34,8 @@ public class InspectionService : IInspectionService
                 OrganizationId = organizationId,
                 InspectionDate = request.InspectionDate,
                 Status = InspectionEnum.Status.Pending.GetDescription(),
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                PlotId = request.PlotId
             };
 
         await _repo.AddAsync(inspection);

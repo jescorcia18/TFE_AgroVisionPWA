@@ -9,4 +9,6 @@ namespace CoffeePestDetection.Application.Features.Inspect.DTOs;
 public class CreateInspectionRequestDto
 {
     public DateTime InspectionDate { get; set; }
+
+    public Guid PlotId { get; set; }
 }
