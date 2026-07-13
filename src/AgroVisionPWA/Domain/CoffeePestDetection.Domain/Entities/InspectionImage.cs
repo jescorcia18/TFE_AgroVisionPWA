@@ -1,5 +1,7 @@
 ﻿
 using CoffeePestDetection.Application.Commons;
+using CoffeePestDetection.Domain.Enums;
+using CoffeePestDetection.Domain.Enums.Features.Sync;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoffeePestDetection.Domain.Entities;
@@ -28,10 +30,10 @@ public class InspectionImage
     public DateTime CreatedAt { get; set; }
 
     [Column("sync_status")]
-    public DateTime SyncStatus { get; set; }
+    public string SyncStatus { get; set; } = SyncLogEnum.Status.Pending.GetDescription();
 
     [Column("inference_status")]
-    public DateTime InferenceStatus { get; set; }
+    public string InferenceStatus { get; set; } = SyncLogEnum.Status.Pending.GetDescription();
 
     /* Navigation */
     public Inspection Inspection { get; set; } = null!;

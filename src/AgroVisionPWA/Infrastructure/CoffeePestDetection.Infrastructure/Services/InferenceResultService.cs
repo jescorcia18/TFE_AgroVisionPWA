@@ -10,6 +10,9 @@ using CoffeePestDetection.Application.Features.InfeResult.DTOs;
 using CoffeePestDetection.Domain.Entities;
 using CoffeePestDetection.Application.Exceptions;
 using System.Xml.XPath;
+using CoffeePestDetection.Infrastructure.Persistence.Repositories.Implementation;
+using CoffeePestDetection.Domain.Enums.Features.Inspection;
+using CoffeePestDetection.Domain.Enums;
 
 namespace CoffeePestDetection.Infrastructure.Services;
 
@@ -39,10 +42,26 @@ public class InferenceResultService : IInferenceResultService
     {
         await ValidateRequest(request);
 
+
+        // Busca la enfermedad
         var disease =
             await _diseaseRepository
             .GetByIdAsync(request.PredictedDiseaseId);
 
+        if (disease is null)
+        {
+            throw new NotFoundException("La enfermedad especificada no existe.");
+        }
+
+        // Buscar la imagen
+        var image = await _imageRepository.GetByIdAsync(request.ImageId);
+
+        if (image is null)
+        {
+            throw new NotFoundException("La imagen especificada no existe.");
+        }
+
+        // Crea inferencia
         var inference =
             new InferenceResult
             {
@@ -58,6 +77,9 @@ public class InferenceResultService : IInferenceResultService
             };
 
         await _repository.AddAsync(inference);
+
+        // Actualizar estado de la imagen
+        image.InferenceStatus = InspectionEnum.Status.Completed.GetDescription();
 
         await _context.SaveChangesAsync();
 
