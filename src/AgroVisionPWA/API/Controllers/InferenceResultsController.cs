@@ -19,8 +19,7 @@ public class InferenceResultsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(
-        CreateInferenceResultRequestDto request)
+    public async Task<IActionResult> Create(CreateInferenceResultRequestDto request)
     {
         var result =
             await _service.CreateAsync(request);

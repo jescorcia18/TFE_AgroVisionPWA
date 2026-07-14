@@ -35,6 +35,7 @@ namespace CoffeePestDetection.API
             services.AddScoped<ISyncService, SyncService>();
             services.AddScoped<IAiModelService, AiModelService>();
             services.AddScoped<ITelemetryService, TelemetryService>();
+            services.AddScoped<IInferenceResultService, InferenceResultService>();
 
             // 3. Respositories Scoped
             services.AddScoped<IInspectionRepository, InspectionRepository>();
