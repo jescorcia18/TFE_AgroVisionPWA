@@ -72,6 +72,15 @@ public class InferenceResultService : IInferenceResultService
                 ModelVersion = request.ModelVersion.Trim(),
                 Confidence = request.Confidence,
                 TopKJson = request.TopKJson,
+                InferenceTimeMs = request.InferenceTimeMs,
+                TfBackend = request.TfBackend,
+                DeviceMemoryGb = request.DeviceMemoryGb,
+                Browser = request.Browser,
+                BrowserVersion = request.BrowserVersion,
+                UserAgent = request.UserAgent,
+                Platform = request.Platform,    
+                OperatingSystem = request.OperatingSystem,
+                TensorflowVersion = request.TensorflowVersion,
                 CreatedAt = DateTime.UtcNow,
                 IsDeleted = false
             };

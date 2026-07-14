@@ -2,6 +2,7 @@
 using CoffeePestDetection.Application.Features.Telemetry.DTOs;
 using CoffeePestDetection.Application.Interfaces;
 using CoffeePestDetection.Domain.Entities;
+using CoffeePestDetection.Domain.Enums.Features.Inspection;
 using CoffeePestDetection.Infrastructure.Persistence;
 using CoffeePestDetection.Infrastructure.Persistence.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,17 +17,27 @@ namespace CoffeePestDetection.Infrastructure.Services;
 public class TelemetryService : ITelemetryService
 {
     private readonly ITelemetryRepository _repository;
+    private readonly IInspectionRepository _inspectionRepository;
     private readonly ApplicationDbContext _context;
 
-    public TelemetryService(ITelemetryRepository repository, ApplicationDbContext context)
+    public TelemetryService(ITelemetryRepository repository, ApplicationDbContext context, IInspectionRepository inspectionRepository)
     {
         _repository = repository;
         _context = context;
+        _inspectionRepository = inspectionRepository;
     }
 
     public async Task CreateAsync(CreateTelemetryRequestDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
+
+        var inspection =
+            await _inspectionRepository.GetByIdAsync(dto.InspectionId);
+
+        if (inspection is null)
+        {
+            throw new NotFoundException("La inspección no existe.");
+        }
 
         if (string.IsNullOrWhiteSpace(dto.PestType))
         {
@@ -54,6 +65,8 @@ public class TelemetryService : ITelemetryService
 
         var telemetry = new Telemetry
         {
+            InspectionId = dto.InspectionId,
+
             Timestamp = dto.Timestamp,
 
             PestType = dto.PestType.Trim(),
@@ -70,6 +83,10 @@ public class TelemetryService : ITelemetryService
         };
 
         await _repository.AddAsync(telemetry);
+
+        //Actualizamos el estado de Inspections
+        inspection.Status = InspectionEnum.Status.Completed.ToString();
+        inspection.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
     }
@@ -94,7 +111,7 @@ public class TelemetryService : ITelemetryService
 
     public async Task<TelemetryDto> GetByIdAsync(Guid id)
     {
-        var telemetry =await _repository.GetByIdAsync(id);
+        var telemetry = await _repository.GetByIdAsync(id);
 
         if (telemetry is null)
         {

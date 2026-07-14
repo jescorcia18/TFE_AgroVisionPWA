@@ -7,6 +7,8 @@ using CoffeePestDetection.Domain.Enums.Features.Sync;
 using CoffeePestDetection.Application.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using CoffeePestDetection.Domain.Enums.Features.Inspection;
+using CoffeePestDetection.Domain.Enums;
 
 namespace CoffeePestDetection.Infrastructure.Services;
 
@@ -80,20 +82,21 @@ public class SyncService : ISyncService
                         new Telemetry
                         {
                             Id = dto.Id,
+                            InspectionId = dto.InspectionId,
                             Timestamp = dto.Timestamp,
                             PestType = dto.PestType,
                             Confidence = dto.Confidence,
                             InferenceTimeMs = dto.InferenceTimeMs,
                             InspectionCount = dto.InspectionCount,
                             DeviceHash = dto.DeviceHash,
-                            SyncStatus = "Completed",
+                            SyncStatus = InspectionEnum.Status.Synced.GetDescription(),
                             CreatedAt = DateTime.UtcNow
                         });
                 }
 
                 await _context.SaveChangesAsync();
 
-                syncLog.Status = SyncLogEnum.Status.Success.ToString();
+                syncLog.Status = SyncLogEnum.Status.Success.GetDescription();
                 syncLog.SyncedEntities = syncedInspections + syncedImages + syncedObservations + syncedInferenceResults;
                 syncLog.SyncedInspections = syncedInspections;
                 syncLog.SyncedImages = syncedImages;
@@ -215,6 +218,7 @@ public class SyncService : ISyncService
                 InspectorId = item.InspectorId,
                 InspectionDate = item.InspectionDate,
                 CreatedAt = DateTime.UtcNow,
+                Status = InspectionEnum.Status.Synced.GetDescription(),
                 IsDeleted = false
             });
 
@@ -245,7 +249,8 @@ public class SyncService : ISyncService
                     Width = item.Width,
                     Height = item.Height,
                     DeviceId = item.DeviceId,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow,
+                    SyncStatus = InspectionEnum.Status.Synced.GetDescription(),
                     //IsDeleted = false
                 });
 
@@ -310,6 +315,12 @@ public class SyncService : ISyncService
                         InferenceTimeMs = item.InferenceTimeMs,
                         TfBackend = item.TfBackend,
                         DeviceMemoryGb = item.DeviceMemoryGb,
+                        Browser = item.Browser,
+                        BrowserVersion = item.BrowserVersion,
+                        Platform = item.Platform,
+                        OperatingSystem = item.OperatingSystem,
+                        UserAgent = item.UserAgent,
+                        TensorflowVersion = item.TensorflowVersion,
                         CreatedAt = DateTime.UtcNow,
                         IsDeleted = false
                     });

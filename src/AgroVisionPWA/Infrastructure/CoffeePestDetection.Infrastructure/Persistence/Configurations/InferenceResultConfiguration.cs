@@ -52,13 +52,29 @@ public class InferenceResultConfiguration
             .HasColumnName("device_memory_gb")
             .HasPrecision(5, 2);
 
-        builder.HasOne(x => x.Image)
-            .WithMany(x => x.InferenceResults)
-            .HasForeignKey(x => x.ImageId);
+        builder.Property(x => x.Browser)
+            .HasColumnName("browser")
+            .HasMaxLength(100);
 
-        builder.HasOne(x => x.PredictedDisease)
-            .WithMany(x => x.InferenceResults)
-            .HasForeignKey(x => x.PredictedDiseaseId);
+        builder.Property(x => x.BrowserVersion)
+            .HasColumnName("browser_version")
+            .HasMaxLength(50);
+
+        builder.Property(x => x.UserAgent)
+            .HasColumnName("user_agent")
+            .HasMaxLength(500);
+
+        builder.Property(x => x.Platform)
+            .HasColumnName("platform")
+            .HasMaxLength(100);
+
+        builder.Property(x => x.OperatingSystem)
+            .HasColumnName("operating_system")
+            .HasMaxLength(100);
+
+        builder.Property(x => x.TensorflowVersion)
+            .HasColumnName("tensorflow_version")
+            .HasMaxLength(20);
 
         builder.Property(x => x.CreatedAt)
            .HasColumnName("created_at");
@@ -68,5 +84,13 @@ public class InferenceResultConfiguration
 
         builder.Property(x => x.IsDeleted)
             .HasColumnName("IsDeleted");
+
+        builder.HasOne(x => x.Image)
+            .WithMany(x => x.InferenceResults)
+            .HasForeignKey(x => x.ImageId);
+
+        builder.HasOne(x => x.PredictedDisease)
+            .WithMany(x => x.InferenceResults)
+            .HasForeignKey(x => x.PredictedDiseaseId);
     }
 }

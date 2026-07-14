@@ -25,4 +25,16 @@ public class CreateInferenceResultRequestDto
     public string? TfBackend { get; set; }
 
     public decimal? DeviceMemoryGb { get; set; }
+
+    public string? Browser { get; set; }
+
+    public string? BrowserVersion { get; set; }
+
+    public string? UserAgent { get; set; }
+
+    public string? Platform { get; set; }
+
+    public string? OperatingSystem { get; set; }
+
+    public string? TensorflowVersion { get; set; }
 }
