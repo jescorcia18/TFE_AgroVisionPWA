@@ -30,4 +30,6 @@ public class Inspection : BaseEntity
     public ICollection<InspectionImage> Images { get; set; } = new List<InspectionImage>();
 
     public ICollection<Observation> Observations { get; set; } = new List<Observation>();
+
+    public ICollection<Telemetry> Telemetries { get; set; } = new List<Telemetry>();
 }

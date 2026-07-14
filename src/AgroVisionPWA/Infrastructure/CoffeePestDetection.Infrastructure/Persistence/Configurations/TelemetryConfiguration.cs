@@ -53,5 +53,13 @@ public class TelemetryConfiguration : IEntityTypeConfiguration<Telemetry>
 
         builder.Property(x => x.IsDeleted)
             .HasColumnName("isDeleted");
+
+        builder.Property(x => x.InspectionId)
+            .HasColumnName("inspection_id");
+
+        builder.HasOne(x => x.Inspection)
+            .WithMany(x => x.Telemetries)
+            .HasForeignKey(x => x.InspectionId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -8,6 +8,8 @@ namespace CoffeePestDetection.Application.Features.Telemetry.DTOs;
 
 public class CreateTelemetryRequestDto
 {
+    public Guid InspectionId { get; set; }
+
     public DateTimeOffset Timestamp { get; set; }
 
     public string PestType { get; set; }  = string.Empty;
