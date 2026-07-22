@@ -79,7 +79,9 @@ public class TelemetryService : ITelemetryService
 
             DeviceHash = dto.DeviceHash,
 
-            SyncStatus = "Completed"
+            SyncStatus = "Completed",
+
+            CreatedAt = DateTime.UtcNow
         };
 
         await _repository.AddAsync(telemetry);
