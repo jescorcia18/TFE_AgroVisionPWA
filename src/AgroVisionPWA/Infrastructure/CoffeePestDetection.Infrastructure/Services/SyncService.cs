@@ -206,10 +206,24 @@ public class SyncService : ISyncService
 
         foreach (var item in inspections)
         {
-            if (await _inspectionRepository.ExistsAsync(item.Id))
+            var inspection = await _inspectionRepository.GetByIdAsync(item.Id);
+
+            //ya fue sincronizada
+            if (inspection != null && inspection.Status == InspectionEnum.Status.Synced.GetDescription())
+                continue;
+
+            //Existe, pero no esta sincronizada
+            if (inspection != null && inspection.Status == InspectionEnum.Status.Pending.GetDescription()) //Existe
             {
+                inspection.Status = InspectionEnum.Status.Synced.GetDescription();
+                inspection.UpdatedAt = DateTime.UtcNow;
+
+                 //_context.Inspections.Update(inspection);
+
+                count++;
                 continue;
             }
+                
 
             await _context.Inspections.AddAsync(new Inspection
             {
@@ -252,6 +266,7 @@ public class SyncService : ISyncService
                     DeviceId = item.DeviceId,
                     CreatedAt = DateTime.UtcNow,
                     SyncStatus = InspectionEnum.Status.Synced.GetDescription(),
+                    InferenceStatus = InspectionEnum.Status.Synced.GetDescription()
                     //IsDeleted = false
                 });
 
