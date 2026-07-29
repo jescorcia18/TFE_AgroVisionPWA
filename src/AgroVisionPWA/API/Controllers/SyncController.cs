@@ -26,7 +26,7 @@ public class SyncController : ControllerBase
         var userId = User.GetUserId();
         var organizationId = User.GetOrganizationId();
 
-        var result = await _service.SyncBulkAsync(request);
+        var result = await _service.SyncBulkAsync(request, organizationId);
 
         return Ok(
             ApiResponse<SyncBulkResponseDto>
