@@ -46,7 +46,7 @@ public class SyncService : ISyncService
         _telemetryRepository = telemetryRepository;
     }
 
-    public async Task<SyncBulkResponseDto> SyncBulkAsync(SyncBulkRequestDto request)
+    public async Task<SyncBulkResponseDto> SyncBulkAsync(SyncBulkRequestDto request, Guid organizationId)
     {
         var stopwatch = Stopwatch.StartNew();
 
@@ -63,7 +63,7 @@ public class SyncService : ISyncService
 
             try
             {
-                var syncedInspections = await SyncInspections(request.Inspections);
+                var syncedInspections = await SyncInspections(request.Inspections, organizationId);
 
                 var syncedImages = await SyncImages(request.Images);
 
@@ -200,7 +200,7 @@ public class SyncService : ISyncService
 
         return MapToDto(log);
     }
-    private async Task<int> SyncInspections(List<SyncInspectionDto> inspections)
+    private async Task<int> SyncInspections(List<SyncInspectionDto> inspections, Guid organizationId)
     {
         int count = 0;
 
@@ -219,6 +219,7 @@ public class SyncService : ISyncService
                 InspectionDate = item.InspectionDate,
                 CreatedAt = DateTime.UtcNow,
                 Status = InspectionEnum.Status.Synced.GetDescription(),
+                OrganizationId = organizationId,
                 IsDeleted = false
             });
 
