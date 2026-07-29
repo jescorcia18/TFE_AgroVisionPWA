@@ -1,4 +1,5 @@
 ﻿using CoffeePestDetection.Application.Commons;
+using CoffeePestDetection.Application.Extensions;
 using CoffeePestDetection.Application.Features.Sync.DTOs;
 using CoffeePestDetection.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +23,9 @@ public class SyncController : ControllerBase
     [HttpPost("bulk")]
     public async Task<IActionResult>Bulk( SyncBulkRequestDto request)
     {
+        var userId = User.GetUserId();
+        var organizationId = User.GetOrganizationId();
+
         var result = await _service.SyncBulkAsync(request);
 
         return Ok(
